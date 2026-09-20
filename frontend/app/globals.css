@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --bg: #0a0a0b;
+  --surface: #151517;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* prevents side scroll */
+  background-color: var(--bg);
+  color: #f2f2f3;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+.font-display {
+  font-family: 'Archivo Black', sans-serif;
+}
+
+::-webkit-scrollbar {
+  height: 6px;
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: #3a3a3f;
+  border-radius: 999px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.badge-flame {
+  background: linear-gradient(135deg, #c8960c, #f0c419);
+}
