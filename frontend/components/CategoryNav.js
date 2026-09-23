@@ -14,8 +14,7 @@ export default function CategoryNav({ categories }) {
     if (sections.length === 0) return;
 
     // A section is considered "current" when it crosses a thin band just
-    // below the sticky header + nav. rootMargin shrinks the observed
-    // viewport to that band instead of the whole screen.
+    // below the sticky header + nav.
     const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries
@@ -37,7 +36,7 @@ export default function CategoryNav({ categories }) {
   }, [categories]);
 
   function goTo(slug) {
-    setActive(slug); // highlight immediately, IntersectionObserver confirms once scroll settles
+    setActive(slug);
     const el = document.getElementById(slug);
     if (el) {
       const y = el.getBoundingClientRect().top + window.scrollY - 116;
@@ -46,20 +45,20 @@ export default function CategoryNav({ categories }) {
   }
 
   const pillBase =
-    "whitespace-nowrap px-4 py-2 rounded-full text-sm font-bold transition border";
+    "whitespace-nowrap px-4 py-2 rounded-full text-sm font-semibold transition border";
 
-  const activeClasses = "badge-flame text-white border-transparent shadow-md shadow-accent/30";
+  const activeClasses = "bg-accent text-white border-transparent shadow-glow";
   const inactiveClasses =
-    "bg-white/5 text-white/60 border-white/10 hover:bg-accent/20 hover:text-white hover:border-accent hover:-translate-y-0.5";
+    "bg-surface2 text-muted border-border hover:text-ink hover:border-accent/50";
 
   return (
-    <nav className="sticky top-[57px] z-30 bg-black border-b border-white/10 shadow-lg shadow-black/40">
+    <nav className="sticky top-[57px] z-30 bg-bg/80 backdrop-blur-xl border-b border-white/10">
       <div className="flex gap-2 overflow-x-auto no-scrollbar px-4 md:px-8 py-3 max-w-7xl mx-auto">
         <button
           onClick={() => goTo("deals")}
           className={`${pillBase} ${active === "deals" ? activeClasses : inactiveClasses}`}
         >
-          DEALS
+          Deals
         </button>
         {categories.map((cat) => (
           <button
@@ -67,7 +66,7 @@ export default function CategoryNav({ categories }) {
             onClick={() => goTo(cat.slug)}
             className={`${pillBase} ${active === cat.slug ? activeClasses : inactiveClasses}`}
           >
-            {cat.name.toUpperCase()}
+            {cat.name}
           </button>
         ))}
       </div>

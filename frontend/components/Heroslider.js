@@ -2,8 +2,6 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 
-const GOLD = "#D4A017";
-
 const SLIDES = [
   { id: "1", cta: "Order Now", href: "#beef-burgers", image: "/images/1.png" },
   { id: "2", cta: "Order Now", href: "#appetizers", image: "/images/2.png" },
@@ -32,12 +30,13 @@ export default function HeroSlider() {
     return () => clearInterval(t);
   }, [paused]);
 
+  const arrow =
+    "absolute top-1/2 -translate-y-1/2 z-10 w-8 h-8 md:w-10 md:h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/20 text-white text-lg flex items-center justify-center hover:bg-accent hover:border-accent transition md:opacity-0 md:group-hover:opacity-100";
+
   return (
-    // Inset card, NOT full-bleed. Lives inside your normal page padding.
     <section className="w-full px-4 md:px-6 pt-3">
       <div
-        className="relative overflow-hidden w-full h-[160px] md:h-[300px] rounded-2xl shadow-lg"
-        style={{ background: "linear-gradient(100deg, #150701 0%, #1b0a02 40%, #050505 75%)" }}
+        className="group relative overflow-hidden w-full h-[160px] md:h-[300px] rounded-3xl shadow-card ring-1 ring-white/10 bg-surface"
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
         onTouchStart={(e) => (touchStartX.current = e.touches[0].clientX)}
@@ -54,42 +53,28 @@ export default function HeroSlider() {
             className="absolute inset-0 transition-opacity duration-700"
             style={{ opacity: i === index ? 1 : 0 }}
           >
-            <img
-              src={s.image}
-              alt=""
-              className="absolute inset-0 w-full h-full object-fill"
-            />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={s.image} alt="" className="absolute inset-0 w-full h-full object-cover object-center" />
           </div>
         ))}
 
-        {/* ARROWS */}
-        <button
-          aria-label="Previous slide"
-          onClick={prev}
-          style={{ backgroundColor: GOLD }}
-          className="absolute left-1.5 md:left-3 top-1/2 -translate-y-1/2 w-6 h-6 md:w-10 md:h-10 text-black text-sm md:text-base rounded-full z-10 flex items-center justify-center shadow-md hover:brightness-110"
-        >
+        {/* Bottom gradient so CTA + dots stay legible */}
+        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/70 to-transparent pointer-events-none" />
+
+        <button aria-label="Previous slide" onClick={prev} className={`${arrow} left-2 md:left-4`}>
           &lsaquo;
         </button>
-        <button
-          aria-label="Next slide"
-          onClick={next}
-          style={{ backgroundColor: GOLD }}
-          className="absolute right-1.5 md:right-3 top-1/2 -translate-y-1/2 w-6 h-6 md:w-10 md:h-10 text-black text-sm md:text-base rounded-full z-10 flex items-center justify-center shadow-md hover:brightness-110"
-        >
+        <button aria-label="Next slide" onClick={next} className={`${arrow} right-2 md:right-4`}>
           &rsaquo;
         </button>
 
-        {/* ORDER NOW BUTTON */}
         <a
           href={SLIDES[index].href}
-          style={{ borderColor: GOLD, color: GOLD }}
-          className="absolute bottom-6 left-1/2 -translate-x-1/2 inline-flex items-center gap-2 border-2 bg-black/40 backdrop-blur-sm px-5 py-1.5 rounded-full font-semibold text-xs md:text-sm tracking-wide transition-colors hover:bg-[#D4A017] hover:text-black z-10"
+          className="absolute bottom-6 md:bottom-7 left-1/2 -translate-x-1/2 z-10 inline-flex items-center gap-2 bg-accent text-white px-5 md:px-6 py-1.5 md:py-2 rounded-full font-bold text-xs md:text-sm tracking-wide shadow-glow hover:bg-accent-hover active:scale-95 transition"
         >
-          {SLIDES[index].cta}
+          {SLIDES[index].cta} <span aria-hidden>→</span>
         </a>
 
-        {/* DOTS */}
         <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-2 z-10">
           {SLIDES.map((_, i) => (
             <button
@@ -97,8 +82,9 @@ export default function HeroSlider() {
               aria-label={`Go to slide ${i + 1}`}
               aria-current={i === index ? "true" : undefined}
               onClick={() => goTo(i)}
-              style={{ backgroundColor: i === index ? GOLD : "rgba(255,255,255,0.4)" }}
-              className={`h-1.5 rounded-full transition-all ${i === index ? "w-5" : "w-1.5"}`}
+              className={`h-1.5 rounded-full transition-all ${
+                i === index ? "w-6 bg-accent" : "w-1.5 bg-white/40 hover:bg-white/70"
+              }`}
             />
           ))}
         </div>

@@ -31,4 +31,27 @@ export async function createOrder(payload) {
   return res.json();
 }
 
+async function postJSON(path, payload) {
+  const res = await fetch(`${API_URL}${path}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    // Field errors come back like {"email": ["..."]}; pull the first message out.
+    const firstFieldError = Object.values(data).flat()[0];
+    throw new Error(data.detail || firstFieldError || "Something went wrong. Please try again.");
+  }
+  return data;
+}
+
+export function registerCustomer(payload) {
+  return postJSON("/auth/register/", payload);
+}
+
+export function loginCustomer(email) {
+  return postJSON("/auth/login/", { email });
+}
+
 export { API_URL };

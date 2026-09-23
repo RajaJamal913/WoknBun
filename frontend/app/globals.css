@@ -1,12 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&display=swap');
-
 :root {
-  --bg: #0a0a0b;
-  --surface: #151517;
+  --bg: #0d0b0a;
+  --surface: #181413;
 }
 
 html, body {
@@ -14,15 +14,19 @@ html, body {
   padding: 0;
   overflow-x: hidden; /* prevents side scroll */
   background-color: var(--bg);
-  color: #f2f2f3;
+  color: #faf5f0;
 }
 
 body {
   font-family: 'Inter', sans-serif;
+  background-image: radial-gradient(900px 400px at 85% -100px, rgba(255, 90, 31, 0.1), transparent 60%);
+  background-repeat: no-repeat;
+  -webkit-font-smoothing: antialiased;
 }
 
 .font-display {
-  font-family: 'Archivo Black', sans-serif;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  letter-spacing: -0.02em;
 }
 
 ::-webkit-scrollbar {
@@ -30,7 +34,7 @@ body {
   width: 8px;
 }
 ::-webkit-scrollbar-thumb {
-  background: #3a3a3f;
+  background: #3d322d;
   border-radius: 999px;
 }
 ::-webkit-scrollbar-track {
@@ -46,5 +50,21 @@ body {
 }
 
 .badge-flame {
-  background: linear-gradient(135deg, #c8960c, #f0c419);
+  background: linear-gradient(135deg, #ff5a1f, #ffb02e);
+}
+
+.glass {
+  background: rgba(24, 20, 19, 0.75);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+:focus-visible {
+  outline: 2px solid #ff5a1f;
+  outline-offset: 2px;
+}
+
+::selection {
+  background: rgba(255, 90, 31, 0.4);
 }
