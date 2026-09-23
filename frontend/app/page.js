@@ -157,7 +157,7 @@ export default async function HomePage() {
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-accent">🕒</span>
-                <span>Mon – Sun<br />12:00 PM – 01:30 AM</span>
+                <span>Mon – Sun<br />12:00 PM – 04:30 AM</span>
               </li>
             </ul>
           </div>
