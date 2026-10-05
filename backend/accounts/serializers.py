@@ -7,9 +7,11 @@ class CustomerSerializer(serializers.ModelSerializer):
         model = Customer
         fields = [
             "id", "full_name", "email", "gender",
-            "date_of_birth", "mobile_number", "auth_token", "created_at",
+            "date_of_birth", "mobile_number", "created_at",
         ]
-        read_only_fields = ["id", "auth_token", "created_at"]
+        # auth_token is deliberately NOT exposed: email-only sign-in must not
+        # hand a credential to whoever types an address.
+        read_only_fields = ["id", "created_at"]
 
 
 class RegisterSerializer(serializers.ModelSerializer):

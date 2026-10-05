@@ -3,7 +3,7 @@ import HeroSlider from "@/components/Heroslider";
 import CategoryNav from "@/components/CategoryNav";
 import ItemCard from "@/components/ItemCard";
 import DealCard from "@/components/DealCard";
-
+import Image from "next/image";
 export const dynamic = "force-dynamic";
 
 function SectionTitle({ children }) {
@@ -18,10 +18,12 @@ function SectionTitle({ children }) {
 const SOCIALS = [
   {
     label: "Facebook",
+    href: "https://www.facebook.com/profile.php?id=61592337191590",
     path: "M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z",
   },
   {
     label: "Instagram",
+    href: "https://www.instagram.com/wok_bun.pk/",
     path: "M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm5 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10Zm5.5-1.5h.01",
   },
   {
@@ -99,27 +101,34 @@ export default async function HomePage() {
         <div className="max-w-7xl mx-auto px-4 md:px-8 py-12 grid sm:grid-cols-2 md:grid-cols-4 gap-10 text-sm">
           <div className="sm:col-span-2 md:col-span-1">
             <div className="flex items-center gap-2 mb-3">
-              <span className="badge-flame w-9 h-9 rounded-full flex items-center justify-center text-sm">🔥</span>
+             <Image
+  src="/images/logo.jpeg"
+  alt="Wok & Bun"
+  width={250}
+  height={50}
+  className="h-9 sm:h-12 md:h-16 w-auto object-contain"
+/>
               <h3 className="font-display font-extrabold text-lg">Wok &amp; Bun</h3>
             </div>
             <p className="text-muted leading-relaxed">
-              DHA Phase II Islamabad&apos;s home for gourmet smash burgers, Nashville hot chicken,
-              stone-baked pizza and authentic Chinese food — made fresh and delivered hot.
+              31D Basement, Tipo Bouleward, Sector D, DHA 2, Islamabad, Pakistan, 44000
             </p>
-            <div className="flex items-center gap-3 mt-4">
-              {SOCIALS.map((s) => (
-                <a
-                  key={s.label}
-                  href="#"
-                  aria-label={s.label}
-                  className="w-9 h-9 rounded-full border border-white/15 flex items-center justify-center text-muted hover:text-white hover:bg-accent hover:border-accent transition"
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d={s.path} />
-                  </svg>
-                </a>
-              ))}
-            </div>
+           <div className="flex items-center gap-3 mt-4">
+  {SOCIALS.filter((s) => s.href).map((s) => (
+    <a
+      key={s.label}
+      href={s.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={s.label}
+      className="w-9 h-9 rounded-full border border-white/15 flex items-center justify-center text-muted hover:text-white hover:bg-accent hover:border-accent transition"
+    >
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d={s.path} />
+      </svg>
+    </a>
+  ))}
+</div>
           </div>
 
           <div>

@@ -1,19 +1,13 @@
-from decimal import Decimal
+from django.db import transaction
 from rest_framework import serializers
+
+from django.conf import settings
+from menu.pricing import OrderLineSerializer, build_lines, calc_tax, money
 from .models import Order, OrderItem
-
-DELIVERY_CHARGES = Decimal("250.00")
-TAX_RATE = Decimal("0.16")
-
-
-class OrderItemSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = OrderItem
-        fields = ["item_name", "size_label", "unit_price", "quantity"]
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    items = OrderItemSerializer(many=True)
+    items = OrderLineSerializer(many=True)
 
     class Meta:
         model = Order
@@ -25,23 +19,26 @@ class OrderSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ["id", "subtotal", "delivery_charges", "tax_amount", "grand_total", "status", "created_at"]
 
-    def create(self, validated_data):
-        items_data = validated_data.pop("items")
-        if not items_data:
+    def validate_items(self, value):
+        if not value:
             raise serializers.ValidationError("Cart is empty.")
+        return value
 
-        subtotal = sum(i["unit_price"] * i["quantity"] for i in items_data)
-        tax_amount = (subtotal * TAX_RATE).quantize(Decimal("0.01"))
-        grand_total = subtotal + DELIVERY_CHARGES + tax_amount
+    @transaction.atomic
+    def create(self, validated_data):
+        lines = build_lines(validated_data.pop("items"))
+
+        subtotal = sum((l["line_total"] for l in lines), money(0))
+        tax_amount = calc_tax(subtotal)
+        delivery = money(settings.DELIVERY_CHARGES)
+        grand_total = subtotal + delivery + tax_amount
 
         order = Order.objects.create(
             subtotal=subtotal,
-            delivery_charges=DELIVERY_CHARGES,
+            delivery_charges=delivery,
             tax_amount=tax_amount,
             grand_total=grand_total,
             **validated_data,
         )
-        for item in items_data:
-            line_total = item["unit_price"] * item["quantity"]
-            OrderItem.objects.create(order=order, line_total=line_total, **item)
+        OrderItem.objects.bulk_create([OrderItem(order=order, **l) for l in lines])
         return order

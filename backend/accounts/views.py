@@ -1,4 +1,5 @@
-from rest_framework import generics, status
+from rest_framework import generics, permissions, status
+from rest_framework.throttling import ScopedRateThrottle
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Customer
@@ -6,6 +7,9 @@ from .serializers import CustomerSerializer, RegisterSerializer, LoginSerializer
 
 
 class RegisterView(generics.CreateAPIView):
+    permission_classes = [permissions.AllowAny]
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = "customer_auth"
     queryset = Customer.objects.all()
     serializer_class = RegisterSerializer
 
@@ -17,6 +21,10 @@ class RegisterView(generics.CreateAPIView):
 
 
 class LoginView(APIView):
+    permission_classes = [permissions.AllowAny]
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = "customer_auth"
+
     def post(self, request):
         serializer = LoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)

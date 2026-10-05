@@ -127,7 +127,7 @@ export default function LocationModal() {
       <div className="absolute inset-0 bg-black/80" />
       <div className="relative w-full max-w-sm bg-surface border border-border rounded-2xl p-6 flex flex-col items-center text-center gap-4">
         <Image
-          src="/images/logo.png"
+          src="/images/logo.jpeg"
           alt="Wok & Bun"
           width={200}
           height={60}

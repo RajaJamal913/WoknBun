@@ -1,0 +1,4301 @@
+[
+{
+  "model": "auth.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1500000$1izCZQujnSUFpRPk1Uhf2b$WfzUjlZ2aOoN6AQTyTBZzYNghRATiDP6obr3t8tzM8Y=",
+    "last_login": "2026-09-30T00:01:05.289Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-09-19T08:03:31.215Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1500000$r7TOQbaJkgiGaBaew4pC7K$Q+5zDRivhaH57cbUEzGGeu0KTuwqlQCySCksl2cuTyM=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "Ali",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-09-27T06:59:18.877Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1500000$xKAB1PaObSWScbOdzk1GXn$/ZAKnIqjaFMUMpkoKAyiSHSXhAXYXtfBPnCA4ihLYp8=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "Aliahmed",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-09-27T07:17:13Z",
+    "groups": [],
+    "user_permissions": [
+      [
+        "add_customer",
+        "accounts",
+        "customer"
+      ],
+      [
+        "change_customer",
+        "accounts",
+        "customer"
+      ],
+      [
+        "delete_customer",
+        "accounts",
+        "customer"
+      ],
+      [
+        "view_customer",
+        "accounts",
+        "customer"
+      ],
+      [
+        "add_logentry",
+        "admin",
+        "logentry"
+      ],
+      [
+        "change_logentry",
+        "admin",
+        "logentry"
+      ],
+      [
+        "delete_logentry",
+        "admin",
+        "logentry"
+      ],
+      [
+        "view_logentry",
+        "admin",
+        "logentry"
+      ],
+      [
+        "add_group",
+        "auth",
+        "group"
+      ],
+      [
+        "change_group",
+        "auth",
+        "group"
+      ],
+      [
+        "delete_group",
+        "auth",
+        "group"
+      ],
+      [
+        "view_group",
+        "auth",
+        "group"
+      ],
+      [
+        "add_permission",
+        "auth",
+        "permission"
+      ],
+      [
+        "change_permission",
+        "auth",
+        "permission"
+      ],
+      [
+        "delete_permission",
+        "auth",
+        "permission"
+      ],
+      [
+        "view_permission",
+        "auth",
+        "permission"
+      ],
+      [
+        "add_user",
+        "auth",
+        "user"
+      ],
+      [
+        "change_user",
+        "auth",
+        "user"
+      ],
+      [
+        "delete_user",
+        "auth",
+        "user"
+      ],
+      [
+        "view_user",
+        "auth",
+        "user"
+      ],
+      [
+        "add_contenttype",
+        "contenttypes",
+        "contenttype"
+      ],
+      [
+        "change_contenttype",
+        "contenttypes",
+        "contenttype"
+      ],
+      [
+        "delete_contenttype",
+        "contenttypes",
+        "contenttype"
+      ],
+      [
+        "view_contenttype",
+        "contenttypes",
+        "contenttype"
+      ],
+      [
+        "add_category",
+        "menu",
+        "category"
+      ],
+      [
+        "change_category",
+        "menu",
+        "category"
+      ],
+      [
+        "delete_category",
+        "menu",
+        "category"
+      ],
+      [
+        "view_category",
+        "menu",
+        "category"
+      ],
+      [
+        "add_deal",
+        "menu",
+        "deal"
+      ],
+      [
+        "change_deal",
+        "menu",
+        "deal"
+      ],
+      [
+        "delete_deal",
+        "menu",
+        "deal"
+      ],
+      [
+        "view_deal",
+        "menu",
+        "deal"
+      ],
+      [
+        "add_menuitem",
+        "menu",
+        "menuitem"
+      ],
+      [
+        "change_menuitem",
+        "menu",
+        "menuitem"
+      ],
+      [
+        "delete_menuitem",
+        "menu",
+        "menuitem"
+      ],
+      [
+        "view_menuitem",
+        "menu",
+        "menuitem"
+      ],
+      [
+        "add_menuitemprice",
+        "menu",
+        "menuitemprice"
+      ],
+      [
+        "change_menuitemprice",
+        "menu",
+        "menuitemprice"
+      ],
+      [
+        "delete_menuitemprice",
+        "menu",
+        "menuitemprice"
+      ],
+      [
+        "view_menuitemprice",
+        "menu",
+        "menuitemprice"
+      ],
+      [
+        "add_order",
+        "orders",
+        "order"
+      ],
+      [
+        "change_order",
+        "orders",
+        "order"
+      ],
+      [
+        "delete_order",
+        "orders",
+        "order"
+      ],
+      [
+        "view_order",
+        "orders",
+        "order"
+      ],
+      [
+        "add_orderitem",
+        "orders",
+        "orderitem"
+      ],
+      [
+        "change_orderitem",
+        "orders",
+        "orderitem"
+      ],
+      [
+        "delete_orderitem",
+        "orders",
+        "orderitem"
+      ],
+      [
+        "view_orderitem",
+        "orders",
+        "orderitem"
+      ],
+      [
+        "add_session",
+        "sessions",
+        "session"
+      ],
+      [
+        "change_session",
+        "sessions",
+        "session"
+      ],
+      [
+        "delete_session",
+        "sessions",
+        "session"
+      ],
+      [
+        "view_session",
+        "sessions",
+        "session"
+      ]
+    ]
+  }
+},
+{
+  "model": "auth.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1500000$ey9IYX0IL1Z6k6t6PKDorn$W1NaQqVCibZN+vdnXImGjs5a+Yozu1X7qrEOjbavgQM=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "awais",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-09-27T16:35:48.018Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "1nh3aqg5lqxav0at7k332e0bi8njoy63",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQBe_iGln-Gyjpc4ZovbvGAWRLcVIh7o4spYD2zcx7ixn2rcx753VeSFyFFqffLQE-uQ5AD6j3JrHVbV2SHIo8aJdTI37dDvfvoEAvo7aJc0ClyFtnfDYWkyMVEniK2p1NUBp05gjZU2bCGFkxRiQTMruL-HwB-4845w:1xBhkv:fuvOovslCEaK8lH08oAQd3Qaeqw6YTj49H1DMWIMtPU",
+    "expire_date": "2026-10-14T00:01:05.360Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "6v1ykx669q5dhu3o3qhpmeqz0a5ezvf2",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQBe_iGln-Gyjpc4ZovbvGAWRLcVIh7o4spYD2zcx7ixn2rcx753VeSFyFFqffLQE-uQ5AD6j3JrHVbV2SHIo8aJdTI37dDvfvoEAvo7aJc0ClyFtnfDYWkyMVEniK2p1NUBp05gjZU2bCGFkxRiQTMruL-HwB-4845w:1xAjGP:d6J2yltYqRAiBt6Xa9eRtG1ZG0H2TMOenjnbdhVjHoU",
+    "expire_date": "2026-10-11T07:25:33.747Z"
+  }
+},
+{
+  "model": "menu.category",
+  "pk": 2,
+  "fields": {
+    "name": "Appetizers",
+    "slug": "appetizers",
+    "order": 0
+  }
+},
+{
+  "model": "menu.category",
+  "pk": 3,
+  "fields": {
+    "name": "Wraps",
+    "slug": "wraps",
+    "order": 1
+  }
+},
+{
+  "model": "menu.category",
+  "pk": 4,
+  "fields": {
+    "name": "Pizza",
+    "slug": "pizza",
+    "order": 2
+  }
+},
+{
+  "model": "menu.category",
+  "pk": 5,
+  "fields": {
+    "name": "Beef Burgers",
+    "slug": "beef-burgers",
+    "order": 3
+  }
+},
+{
+  "model": "menu.category",
+  "pk": 6,
+  "fields": {
+    "name": "Chicken Burgers",
+    "slug": "chicken-burgers",
+    "order": 4
+  }
+},
+{
+  "model": "menu.category",
+  "pk": 7,
+  "fields": {
+    "name": "Pasta",
+    "slug": "pasta",
+    "order": 5
+  }
+},
+{
+  "model": "menu.category",
+  "pk": 8,
+  "fields": {
+    "name": "Seafood",
+    "slug": "seafood",
+    "order": 6
+  }
+},
+{
+  "model": "menu.category",
+  "pk": 9,
+  "fields": {
+    "name": "Fried Rice",
+    "slug": "fried-rice",
+    "order": 7
+  }
+},
+{
+  "model": "menu.category",
+  "pk": 10,
+  "fields": {
+    "name": "Chow Mein",
+    "slug": "chow-mein",
+    "order": 8
+  }
+},
+{
+  "model": "menu.category",
+  "pk": 11,
+  "fields": {
+    "name": "Main Course",
+    "slug": "main-course",
+    "order": 9
+  }
+},
+{
+  "model": "menu.category",
+  "pk": 12,
+  "fields": {
+    "name": "Beverages",
+    "slug": "beverages",
+    "order": 10
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 1,
+  "fields": {
+    "category": 2,
+    "name": "Chicken Wings (6 pcs)",
+    "description": "",
+    "note": "Any sauce of your choice among Dynamite, Buffalo, Hot Honey & BBQ",
+    "image_url": "http://localhost:3000/images/chickenwings.png",
+    "badge": "",
+    "order": 0,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 2,
+  "fields": {
+    "category": 2,
+    "name": "Nashville Tenders (3 pcs)",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/nashvilletenders.png",
+    "badge": "best_seller",
+    "order": 1,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 3,
+  "fields": {
+    "category": 2,
+    "name": "Plain Fries",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/plainfries.png",
+    "badge": "",
+    "order": 2,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 4,
+  "fields": {
+    "category": 2,
+    "name": "Masalla Fries",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/Maslafries.png",
+    "badge": "",
+    "order": 3,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 5,
+  "fields": {
+    "category": 2,
+    "name": "Loaded Fries",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/loadedfries.png",
+    "badge": "",
+    "order": 4,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 6,
+  "fields": {
+    "category": 2,
+    "name": "Chicken Dumplings",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/dumplings.png",
+    "badge": "",
+    "order": 5,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 7,
+  "fields": {
+    "category": 2,
+    "name": "Hot & Sour Soup",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/hot&soursoup.png",
+    "badge": "",
+    "order": 6,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 8,
+  "fields": {
+    "category": 2,
+    "name": "Corn Soup",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/cornsoup.png",
+    "badge": "",
+    "order": 7,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 9,
+  "fields": {
+    "category": 3,
+    "name": "Zing Wing Wrap",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/Wraps/zingwingwrap.png",
+    "badge": "",
+    "order": 0,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 10,
+  "fields": {
+    "category": 3,
+    "name": "Mexican Wrap",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/Wraps/mexicanwrap.png",
+    "badge": "",
+    "order": 1,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 11,
+  "fields": {
+    "category": 3,
+    "name": "Special Loaded Wrap",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/Wraps/specialloadedwrap.png",
+    "badge": "",
+    "order": 2,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 12,
+  "fields": {
+    "category": 4,
+    "name": "Chicken Tikka",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/Pizza/chickentikka.png",
+    "badge": "",
+    "order": 0,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 13,
+  "fields": {
+    "category": 4,
+    "name": "Chicken Fajita",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/Pizza/chickenfajita.png",
+    "badge": "",
+    "order": 1,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 14,
+  "fields": {
+    "category": 4,
+    "name": "Chicken Cheese Lover",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/Pizza/chickencheese.png",
+    "badge": "",
+    "order": 2,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 15,
+  "fields": {
+    "category": 4,
+    "name": "Chicken Supreme",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/Pizza/chickensupreme.png",
+    "badge": "",
+    "order": 3,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 16,
+  "fields": {
+    "category": 4,
+    "name": "Smokey Barbeque",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/Pizza/smokeybarbq.png",
+    "badge": "best_seller",
+    "order": 4,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 17,
+  "fields": {
+    "category": 4,
+    "name": "Crown Crust",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/Pizza/crowncrust.png",
+    "badge": "",
+    "order": 5,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 18,
+  "fields": {
+    "category": 5,
+    "name": "Classic Smash",
+    "description": "",
+    "note": "All burgers are served with fries",
+    "image_url": "http://localhost:3000/images/Burgers/smashburger.png",
+    "badge": "",
+    "order": 0,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 19,
+  "fields": {
+    "category": 5,
+    "name": "Swiss Mushroom",
+    "description": "",
+    "note": "All burgers are served with fries",
+    "image_url": "http://localhost:3000/images/Burgers/swismushrom.png",
+    "badge": "",
+    "order": 1,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 20,
+  "fields": {
+    "category": 5,
+    "name": "Sweet & Smoky BBQ",
+    "description": "",
+    "note": "All burgers are served with fries",
+    "image_url": "http://localhost:3000/images/Burgers/smokyburger.png",
+    "badge": "best_seller",
+    "order": 2,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 21,
+  "fields": {
+    "category": 5,
+    "name": "Spicy Jalapeño",
+    "description": "",
+    "note": "All burgers are served with fries",
+    "image_url": "http://localhost:3000/images/Burgers/jalpenoburger.png",
+    "badge": "",
+    "order": 3,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 22,
+  "fields": {
+    "category": 5,
+    "name": "Grilled Special",
+    "description": "",
+    "note": "All burgers are served with fries",
+    "image_url": "http://localhost:3000/images/Burgers/grilledburger.png",
+    "badge": "",
+    "order": 4,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 23,
+  "fields": {
+    "category": 6,
+    "name": "Nashville Burger",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/Burgers/nashville.png",
+    "badge": "best_seller",
+    "order": 0,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 24,
+  "fields": {
+    "category": 6,
+    "name": "Ultimate Crispy Burger",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/Burgers/crispyburger.png",
+    "badge": "",
+    "order": 1,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 25,
+  "fields": {
+    "category": 6,
+    "name": "Jalapeño Popper Burger",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/Burgers/jalpenopoppers.png",
+    "badge": "",
+    "order": 2,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 26,
+  "fields": {
+    "category": 6,
+    "name": "BBQ Crunch Burger",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/Burgers/bbqcrunch.png",
+    "badge": "",
+    "order": 3,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 27,
+  "fields": {
+    "category": 6,
+    "name": "Grilled Swiss Mushroom Burger",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/Burgers/grilledswiss.png",
+    "badge": "",
+    "order": 4,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 28,
+  "fields": {
+    "category": 7,
+    "name": "Mac & Cheese Creamy Pasta",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/Pasta/mac.png",
+    "badge": "",
+    "order": 0,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 29,
+  "fields": {
+    "category": 7,
+    "name": "Chicken Alfredo",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/Pasta/chickenalfredo.png",
+    "badge": "",
+    "order": 1,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 30,
+  "fields": {
+    "category": 7,
+    "name": "Pasta Lavista",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/Pasta/pastalavista.png",
+    "badge": "",
+    "order": 2,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 31,
+  "fields": {
+    "category": 7,
+    "name": "Special Pasta",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/Pasta/specialpasta.png",
+    "badge": "best_seller",
+    "order": 3,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 32,
+  "fields": {
+    "category": 8,
+    "name": "Fish & Chips",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/Seafoods/fish&chips.png",
+    "badge": "",
+    "order": 0,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 33,
+  "fields": {
+    "category": 8,
+    "name": "Dynamite Prawns",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/Seafoods/dynamiteprawns.png",
+    "badge": "best_seller",
+    "order": 1,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 34,
+  "fields": {
+    "category": 8,
+    "name": "Prawn Tempura",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/SeaFoods/prawntempura.png",
+    "badge": "",
+    "order": 2,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 35,
+  "fields": {
+    "category": 9,
+    "name": "Vegetable Fried Rice",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/Rice/vegetablefriedrice.png",
+    "badge": "",
+    "order": 0,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 36,
+  "fields": {
+    "category": 9,
+    "name": "Chicken Fried Rice",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/Rice/chickenfriedrice.png",
+    "badge": "",
+    "order": 1,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 37,
+  "fields": {
+    "category": 9,
+    "name": "Egg Fried Rice",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/Rice/eggfriedrice.png",
+    "badge": "",
+    "order": 2,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 38,
+  "fields": {
+    "category": 9,
+    "name": "Shangyaki Special Fried Rice",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/Rice/shangyakirice.png",
+    "badge": "best_seller",
+    "order": 3,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 39,
+  "fields": {
+    "category": 10,
+    "name": "Vegetable Chow Mein",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/Chowmein/vegetablechowmein.png",
+    "badge": "",
+    "order": 0,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 40,
+  "fields": {
+    "category": 10,
+    "name": "Chicken Chow Mein",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/Chowmein/chickenchowmein.png",
+    "badge": "",
+    "order": 1,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 41,
+  "fields": {
+    "category": 10,
+    "name": "Shangyaki Special Chow Mein",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/Chowmein/Shangyakichowmein.png",
+    "badge": "best_seller",
+    "order": 2,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 42,
+  "fields": {
+    "category": 11,
+    "name": "Chicken Chilli Dry",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/MainCourse/chickenchillidry.png",
+    "badge": "",
+    "order": 0,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 43,
+  "fields": {
+    "category": 11,
+    "name": "Chicken Manchurian",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/MainCourse/chickenmanchurian.png",
+    "badge": "",
+    "order": 1,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 44,
+  "fields": {
+    "category": 11,
+    "name": "Chicken Schezwan",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/MainCourse/chickenschezwan.png",
+    "badge": "",
+    "order": 2,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 45,
+  "fields": {
+    "category": 11,
+    "name": "Dragon Chicken",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/MainCourse/dragonchicken.png",
+    "badge": "best_seller",
+    "order": 3,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 46,
+  "fields": {
+    "category": 11,
+    "name": "Kung Pao Chicken",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/MainCourse/kungpao.png",
+    "badge": "",
+    "order": 4,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 47,
+  "fields": {
+    "category": 11,
+    "name": "Cashew Nut Chicken",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/MainCourse/cashnew.png",
+    "badge": "",
+    "order": 5,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 48,
+  "fields": {
+    "category": 11,
+    "name": "Black Pepper Chicken",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/MainCourse/blackpepper.png",
+    "badge": "",
+    "order": 6,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 49,
+  "fields": {
+    "category": 11,
+    "name": "Chicken Garlic",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/MainCourse/chickengarlic.png",
+    "badge": "",
+    "order": 7,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 50,
+  "fields": {
+    "category": 11,
+    "name": "Kung Pao Beef",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/MainCourse/kungpaobeef.png",
+    "badge": "",
+    "order": 8,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 51,
+  "fields": {
+    "category": 11,
+    "name": "Beef Chilli Dry",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/MainCourse/beefchilidry.png",
+    "badge": "",
+    "order": 9,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 52,
+  "fields": {
+    "category": 11,
+    "name": "Mongolian Beef",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/MainCourse/mangollianbeef.png",
+    "badge": "best_seller",
+    "order": 10,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 53,
+  "fields": {
+    "category": 12,
+    "name": "Cola Next / Pepsi",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/Beverages/cola.png",
+    "badge": "",
+    "order": 0,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 54,
+  "fields": {
+    "category": 12,
+    "name": "Mint Margarita",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/Beverages/mint.png",
+    "badge": "",
+    "order": 1,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 55,
+  "fields": {
+    "category": 12,
+    "name": "Mineral Water",
+    "description": "",
+    "note": "",
+    "image_url": "http://localhost:3000/images/Beverages/water.png",
+    "badge": "",
+    "order": 2,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 1,
+  "fields": {
+    "menu_item": 1,
+    "label": "",
+    "price": "749.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 2,
+  "fields": {
+    "menu_item": 2,
+    "label": "",
+    "price": "999.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 3,
+  "fields": {
+    "menu_item": 3,
+    "label": "",
+    "price": "399.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 4,
+  "fields": {
+    "menu_item": 4,
+    "label": "",
+    "price": "499.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 5,
+  "fields": {
+    "menu_item": 5,
+    "label": "",
+    "price": "749.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 6,
+  "fields": {
+    "menu_item": 6,
+    "label": "",
+    "price": "699.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 7,
+  "fields": {
+    "menu_item": 7,
+    "label": "",
+    "price": "549.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 8,
+  "fields": {
+    "menu_item": 8,
+    "label": "",
+    "price": "549.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 9,
+  "fields": {
+    "menu_item": 9,
+    "label": "",
+    "price": "649.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 10,
+  "fields": {
+    "menu_item": 10,
+    "label": "",
+    "price": "649.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 11,
+  "fields": {
+    "menu_item": 11,
+    "label": "",
+    "price": "749.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 12,
+  "fields": {
+    "menu_item": 12,
+    "label": "Small",
+    "price": "649.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 13,
+  "fields": {
+    "menu_item": 12,
+    "label": "Medium",
+    "price": "1299.00",
+    "order": 1
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 14,
+  "fields": {
+    "menu_item": 12,
+    "label": "Large",
+    "price": "1999.00",
+    "order": 2
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 15,
+  "fields": {
+    "menu_item": 12,
+    "label": "X-Large",
+    "price": "2599.00",
+    "order": 3
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 16,
+  "fields": {
+    "menu_item": 13,
+    "label": "Small",
+    "price": "649.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 17,
+  "fields": {
+    "menu_item": 13,
+    "label": "Medium",
+    "price": "1299.00",
+    "order": 1
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 18,
+  "fields": {
+    "menu_item": 13,
+    "label": "Large",
+    "price": "1999.00",
+    "order": 2
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 19,
+  "fields": {
+    "menu_item": 13,
+    "label": "X-Large",
+    "price": "2599.00",
+    "order": 3
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 20,
+  "fields": {
+    "menu_item": 14,
+    "label": "Small",
+    "price": "649.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 21,
+  "fields": {
+    "menu_item": 14,
+    "label": "Medium",
+    "price": "1299.00",
+    "order": 1
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 22,
+  "fields": {
+    "menu_item": 14,
+    "label": "Large",
+    "price": "1999.00",
+    "order": 2
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 23,
+  "fields": {
+    "menu_item": 14,
+    "label": "X-Large",
+    "price": "2599.00",
+    "order": 3
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 24,
+  "fields": {
+    "menu_item": 15,
+    "label": "Small",
+    "price": "649.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 25,
+  "fields": {
+    "menu_item": 15,
+    "label": "Medium",
+    "price": "1299.00",
+    "order": 1
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 26,
+  "fields": {
+    "menu_item": 15,
+    "label": "Large",
+    "price": "1999.00",
+    "order": 2
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 27,
+  "fields": {
+    "menu_item": 15,
+    "label": "X-Large",
+    "price": "2599.00",
+    "order": 3
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 28,
+  "fields": {
+    "menu_item": 16,
+    "label": "Small",
+    "price": "699.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 29,
+  "fields": {
+    "menu_item": 16,
+    "label": "Medium",
+    "price": "1349.00",
+    "order": 1
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 30,
+  "fields": {
+    "menu_item": 16,
+    "label": "Large",
+    "price": "2099.00",
+    "order": 2
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 31,
+  "fields": {
+    "menu_item": 16,
+    "label": "X-Large",
+    "price": "2699.00",
+    "order": 3
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 32,
+  "fields": {
+    "menu_item": 17,
+    "label": "Large",
+    "price": "2399.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 33,
+  "fields": {
+    "menu_item": 17,
+    "label": "X-Large",
+    "price": "2999.00",
+    "order": 1
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 34,
+  "fields": {
+    "menu_item": 18,
+    "label": "Single",
+    "price": "749.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 35,
+  "fields": {
+    "menu_item": 18,
+    "label": "Double",
+    "price": "999.00",
+    "order": 1
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 36,
+  "fields": {
+    "menu_item": 19,
+    "label": "Single",
+    "price": "799.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 37,
+  "fields": {
+    "menu_item": 19,
+    "label": "Double",
+    "price": "1099.00",
+    "order": 1
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 38,
+  "fields": {
+    "menu_item": 20,
+    "label": "Single",
+    "price": "899.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 39,
+  "fields": {
+    "menu_item": 20,
+    "label": "Double",
+    "price": "1199.00",
+    "order": 1
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 40,
+  "fields": {
+    "menu_item": 21,
+    "label": "Single",
+    "price": "799.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 41,
+  "fields": {
+    "menu_item": 21,
+    "label": "Double",
+    "price": "1099.00",
+    "order": 1
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 42,
+  "fields": {
+    "menu_item": 22,
+    "label": "Single",
+    "price": "899.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 43,
+  "fields": {
+    "menu_item": 22,
+    "label": "Double",
+    "price": "1199.00",
+    "order": 1
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 44,
+  "fields": {
+    "menu_item": 23,
+    "label": "",
+    "price": "899.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 45,
+  "fields": {
+    "menu_item": 24,
+    "label": "",
+    "price": "599.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 46,
+  "fields": {
+    "menu_item": 25,
+    "label": "",
+    "price": "799.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 47,
+  "fields": {
+    "menu_item": 26,
+    "label": "",
+    "price": "749.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 48,
+  "fields": {
+    "menu_item": 27,
+    "label": "",
+    "price": "749.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 49,
+  "fields": {
+    "menu_item": 28,
+    "label": "",
+    "price": "999.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 50,
+  "fields": {
+    "menu_item": 29,
+    "label": "",
+    "price": "1299.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 51,
+  "fields": {
+    "menu_item": 30,
+    "label": "",
+    "price": "1299.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 52,
+  "fields": {
+    "menu_item": 31,
+    "label": "",
+    "price": "1499.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 53,
+  "fields": {
+    "menu_item": 32,
+    "label": "",
+    "price": "1299.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 54,
+  "fields": {
+    "menu_item": 33,
+    "label": "",
+    "price": "1499.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 55,
+  "fields": {
+    "menu_item": 34,
+    "label": "",
+    "price": "1599.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 56,
+  "fields": {
+    "menu_item": 35,
+    "label": "",
+    "price": "649.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 57,
+  "fields": {
+    "menu_item": 36,
+    "label": "",
+    "price": "749.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 58,
+  "fields": {
+    "menu_item": 37,
+    "label": "",
+    "price": "749.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 59,
+  "fields": {
+    "menu_item": 38,
+    "label": "",
+    "price": "999.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 60,
+  "fields": {
+    "menu_item": 39,
+    "label": "",
+    "price": "899.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 61,
+  "fields": {
+    "menu_item": 40,
+    "label": "",
+    "price": "1099.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 62,
+  "fields": {
+    "menu_item": 41,
+    "label": "",
+    "price": "1299.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 63,
+  "fields": {
+    "menu_item": 42,
+    "label": "Regular",
+    "price": "1199.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 64,
+  "fields": {
+    "menu_item": 42,
+    "label": "Large",
+    "price": "1999.00",
+    "order": 1
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 65,
+  "fields": {
+    "menu_item": 43,
+    "label": "Regular",
+    "price": "1199.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 66,
+  "fields": {
+    "menu_item": 43,
+    "label": "Large",
+    "price": "1999.00",
+    "order": 1
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 67,
+  "fields": {
+    "menu_item": 44,
+    "label": "Regular",
+    "price": "1199.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 68,
+  "fields": {
+    "menu_item": 44,
+    "label": "Large",
+    "price": "1999.00",
+    "order": 1
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 69,
+  "fields": {
+    "menu_item": 45,
+    "label": "Regular",
+    "price": "1199.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 70,
+  "fields": {
+    "menu_item": 45,
+    "label": "Large",
+    "price": "1999.00",
+    "order": 1
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 71,
+  "fields": {
+    "menu_item": 46,
+    "label": "Regular",
+    "price": "1299.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 72,
+  "fields": {
+    "menu_item": 46,
+    "label": "Large",
+    "price": "1999.00",
+    "order": 1
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 73,
+  "fields": {
+    "menu_item": 47,
+    "label": "Regular",
+    "price": "1399.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 74,
+  "fields": {
+    "menu_item": 47,
+    "label": "Large",
+    "price": "1999.00",
+    "order": 1
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 75,
+  "fields": {
+    "menu_item": 48,
+    "label": "Regular",
+    "price": "1199.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 76,
+  "fields": {
+    "menu_item": 48,
+    "label": "Large",
+    "price": "1999.00",
+    "order": 1
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 77,
+  "fields": {
+    "menu_item": 49,
+    "label": "Regular",
+    "price": "1199.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 78,
+  "fields": {
+    "menu_item": 49,
+    "label": "Large",
+    "price": "1199.00",
+    "order": 1
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 79,
+  "fields": {
+    "menu_item": 50,
+    "label": "Regular",
+    "price": "1499.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 80,
+  "fields": {
+    "menu_item": 50,
+    "label": "Large",
+    "price": "2299.00",
+    "order": 1
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 81,
+  "fields": {
+    "menu_item": 51,
+    "label": "Regular",
+    "price": "1499.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 82,
+  "fields": {
+    "menu_item": 51,
+    "label": "Large",
+    "price": "2299.00",
+    "order": 1
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 83,
+  "fields": {
+    "menu_item": 52,
+    "label": "Regular",
+    "price": "1499.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 84,
+  "fields": {
+    "menu_item": 52,
+    "label": "Large",
+    "price": "2299.00",
+    "order": 1
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 85,
+  "fields": {
+    "menu_item": 53,
+    "label": "345 ml",
+    "price": "130.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 86,
+  "fields": {
+    "menu_item": 53,
+    "label": "500 ml",
+    "price": "150.00",
+    "order": 1
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 87,
+  "fields": {
+    "menu_item": 54,
+    "label": "",
+    "price": "299.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 88,
+  "fields": {
+    "menu_item": 55,
+    "label": "Small",
+    "price": "120.00",
+    "order": 0
+  }
+},
+{
+  "model": "menu.menuitemprice",
+  "pk": 89,
+  "fields": {
+    "menu_item": 55,
+    "label": "Large",
+    "price": "199.00",
+    "order": 1
+  }
+},
+{
+  "model": "menu.deal",
+  "pk": 1,
+  "fields": {
+    "name": "Student Deal",
+    "description": "Any Chicken Burger\r\nRegular Fries\r\nSoft Drink 345ml",
+    "price": "999.00",
+    "badge": "",
+    "image_url": "http://localhost:3000/images/Deals/deal1.png",
+    "order": 0,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.deal",
+  "pk": 2,
+  "fields": {
+    "name": "Burger Deal (2 Persons)",
+    "description": "2 Chicken Burgers\r\n1 Large Fries\r\n2 Soft Drinks 345ml",
+    "price": "1599.00",
+    "badge": "",
+    "image_url": "http://localhost:3000/images/Deals/deal2.png",
+    "order": 1,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.deal",
+  "pk": 3,
+  "fields": {
+    "name": "Smash Lovers Deal",
+    "description": "2 Smash Burgers\r\n1 Animal Fries\r\n2 Soft Drinks 345ml",
+    "price": "2299.00",
+    "badge": "",
+    "image_url": "http://localhost:3000/images/Deals/deal3.png",
+    "order": 2,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.deal",
+  "pk": 4,
+  "fields": {
+    "name": "Pizza Deal 1",
+    "description": "1 Medium Pizza\r\n2 Zinger Burgers\r\n1 Soft Drink 500ml",
+    "price": "2399.00",
+    "badge": "",
+    "image_url": "http://localhost:3000/images/Deals/deal4.png",
+    "order": 3,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.deal",
+  "pk": 5,
+  "fields": {
+    "name": "Pizza Deal 2",
+    "description": "1 Large Pizza\r\n6 Chicken Wings\r\n1 Soft Drink 1 Ltr",
+    "price": "2599.00",
+    "badge": "",
+    "image_url": "http://localhost:3000/images/Deals/deal5.png",
+    "order": 4,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.deal",
+  "pk": 6,
+  "fields": {
+    "name": "Family Pizza Deal",
+    "description": "2 Large Pizzas\r\n1 Loaded Fries\r\n6 Chicken Wings\r\nSoft Drink 1.5 Ltr",
+    "price": "3999.00",
+    "badge": "",
+    "image_url": "http://localhost:3000/images/Deals/deal6.png",
+    "order": 5,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.deal",
+  "pk": 7,
+  "fields": {
+    "name": "Chinese Deal 1",
+    "description": "2 Chicken Gravy\r\nRice\r\nChow Mein",
+    "price": "2899.00",
+    "badge": "2 Mint Margarita Complimentary",
+    "image_url": "http://localhost:3000/images/Deals/deal7.png",
+    "order": 6,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.deal",
+  "pk": 8,
+  "fields": {
+    "name": "Chinese Deal 2",
+    "description": "2 Beef Gravy\r\nRice\r\nChow Mein",
+    "price": "3299.00",
+    "badge": "2 Mint Margarita Complimentary",
+    "image_url": "http://localhost:3000/images/Deals/deal8.png",
+    "order": 7,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.deal",
+  "pk": 9,
+  "fields": {
+    "name": "Chinese Deal 3",
+    "description": "1 Chicken Gravy\r\n1 Beef Gravy\r\nRice & Chow Mein",
+    "price": "2999.00",
+    "badge": "2 Mint Margarita Complimentary",
+    "image_url": "http://localhost:3000/images/Deals/deal9.png",
+    "order": 8,
+    "is_active": true
+  }
+},
+{
+  "model": "menu.deal",
+  "pk": 10,
+  "fields": {
+    "name": "Chinese Deal 4",
+    "description": "Any Soup + Dumpling\r\n2 Full Gravy of Your Choice\r\nChow Mein",
+    "price": "4599.00",
+    "badge": "2 Mint Margarita Complimentary",
+    "image_url": "http://localhost:3000/images/Deals/deal10.png",
+    "order": 9,
+    "is_active": true
+  }
+},
+{
+  "model": "orders.order",
+  "pk": 1,
+  "fields": {
+    "full_name": "Muhammad Jamal Raja",
+    "mobile_number": "+923113925176",
+    "email": "m.jamalraja436@gmail.com",
+    "alt_phone": "",
+    "address_line": "House Number B-142 Sakhi Nagar Hassan Abdal\nHouse Number B-142 Sakhi Nagar Hassan Abdal",
+    "special_instructions": "",
+    "payment_method": "cod",
+    "subtotal": "1599.00",
+    "delivery_charges": "250.00",
+    "tax_amount": "255.84",
+    "grand_total": "2104.84",
+    "status": "pending",
+    "created_at": "2026-09-19T18:18:53.541Z"
+  }
+},
+{
+  "model": "orders.orderitem",
+  "pk": 1,
+  "fields": {
+    "order": 1,
+    "item_name": "Burger Deal (2 Persons)",
+    "size_label": "Deal",
+    "unit_price": "1599.00",
+    "quantity": 1,
+    "line_total": "1599.00",
+    "menu_item": null,
+    "price": null,
+    "deal": null
+  }
+},
+{
+  "model": "accounts.customer",
+  "pk": 1,
+  "fields": {
+    "full_name": "Muhammad Jamal Raja",
+    "email": "m.jamalraja436@gmail.com",
+    "gender": "male",
+    "date_of_birth": "2000-04-05",
+    "mobile_number": "3113925176",
+    "auth_token": "217d98d92f21432ca879fb675fb71cb0",
+    "created_at": "2026-09-23T13:47:57.046Z"
+  }
+},
+{
+  "model": "pos.shift",
+  "pk": 2,
+  "fields": {
+    "cashier": [
+      "Aliahmed"
+    ],
+    "status": "closed",
+    "opening_cash": "5000.00",
+    "closing_cash": "7000.00",
+    "opened_at": "2026-09-27T16:34:31.488Z",
+    "closed_at": "2026-10-01T06:57:28.719Z"
+  }
+},
+{
+  "model": "pos.shift",
+  "pk": 3,
+  "fields": {
+    "cashier": [
+      "awais"
+    ],
+    "status": "closed",
+    "opening_cash": "5000.00",
+    "closing_cash": "8000.00",
+    "opened_at": "2026-09-27T16:36:57.258Z",
+    "closed_at": "2026-10-01T11:38:14.089Z"
+  }
+},
+{
+  "model": "pos.shift",
+  "pk": 4,
+  "fields": {
+    "cashier": [
+      "Aliahmed"
+    ],
+    "status": "closed",
+    "opening_cash": "5000.00",
+    "closing_cash": "3000.00",
+    "opened_at": "2026-10-01T06:57:36.958Z",
+    "closed_at": "2026-10-01T06:57:46.893Z"
+  }
+},
+{
+  "model": "pos.shift",
+  "pk": 5,
+  "fields": {
+    "cashier": [
+      "Aliahmed"
+    ],
+    "status": "closed",
+    "opening_cash": "5000.00",
+    "closing_cash": "400.00",
+    "opened_at": "2026-10-01T06:57:59.261Z",
+    "closed_at": "2026-10-01T06:59:43.143Z"
+  }
+},
+{
+  "model": "pos.shift",
+  "pk": 6,
+  "fields": {
+    "cashier": [
+      "Aliahmed"
+    ],
+    "status": "closed",
+    "opening_cash": "5000.00",
+    "closing_cash": "5000.00",
+    "opened_at": "2026-10-01T11:37:28.220Z",
+    "closed_at": "2026-10-01T11:37:40.143Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 5,
+  "fields": {
+    "client_order_id": "2dab75e0-e392-4bba-99e6-b805d60c57b2",
+    "shift": 3,
+    "order_type": "counter",
+    "table_label": "",
+    "status": "settled",
+    "subtotal": "749.00",
+    "discount_amount": "0.00",
+    "tax_amount": "119.84",
+    "grand_total": "868.84",
+    "created_at": "2026-09-27T16:37:04.924Z",
+    "settled_at": "2026-10-01T11:38:04.089Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 6,
+  "fields": {
+    "client_order_id": "600e1313-9ac8-4682-8d25-b046339c8445",
+    "shift": 2,
+    "order_type": "counter",
+    "table_label": "",
+    "status": "settled",
+    "subtotal": "499.00",
+    "discount_amount": "0.00",
+    "tax_amount": "79.84",
+    "grand_total": "578.84",
+    "created_at": "2026-09-30T14:00:31.867Z",
+    "settled_at": "2026-09-30T14:02:40.071Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 7,
+  "fields": {
+    "client_order_id": "0529ffec-6f48-4055-a679-4bf0e4ca67b5",
+    "shift": 2,
+    "order_type": "counter",
+    "table_label": "",
+    "status": "settled",
+    "subtotal": "649.00",
+    "discount_amount": "0.00",
+    "tax_amount": "103.84",
+    "grand_total": "752.84",
+    "created_at": "2026-09-30T14:03:31.276Z",
+    "settled_at": "2026-09-30T14:03:51.373Z"
+  }
+},
+{
+  "model": "pos.order",
+  "pk": 8,
+  "fields": {
+    "client_order_id": "8ea757a8-a467-4443-baf9-8e730a7f7a91",
+    "shift": 3,
+    "order_type": "counter",
+    "table_label": "",
+    "status": "settled",
+    "subtotal": "749.00",
+    "discount_amount": "0.00",
+    "tax_amount": "119.84",
+    "grand_total": "868.84",
+    "created_at": "2026-10-01T11:37:56.593Z",
+    "settled_at": "2026-10-01T11:38:06.785Z"
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 5,
+  "fields": {
+    "order": 5,
+    "item_name": "Loaded Fries",
+    "size_label": "",
+    "unit_price": "749.00",
+    "quantity": 1,
+    "line_total": "749.00",
+    "menu_item": null,
+    "price": null,
+    "deal": null
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 6,
+  "fields": {
+    "order": 6,
+    "item_name": "Masalla Fries",
+    "size_label": "",
+    "unit_price": "499.00",
+    "quantity": 1,
+    "line_total": "499.00",
+    "menu_item": null,
+    "price": null,
+    "deal": null
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 7,
+  "fields": {
+    "order": 7,
+    "item_name": "Vegetable Fried Rice",
+    "size_label": "",
+    "unit_price": "649.00",
+    "quantity": 1,
+    "line_total": "649.00",
+    "menu_item": null,
+    "price": null,
+    "deal": null
+  }
+},
+{
+  "model": "pos.orderitem",
+  "pk": 8,
+  "fields": {
+    "order": 8,
+    "item_name": "Loaded Fries",
+    "size_label": "",
+    "unit_price": "749.00",
+    "quantity": 1,
+    "line_total": "749.00",
+    "menu_item": null,
+    "price": null,
+    "deal": null
+  }
+},
+{
+  "model": "pos.settlement",
+  "pk": 1,
+  "fields": {
+    "order": 6,
+    "cashier": [
+      "Aliahmed"
+    ],
+    "payment_method": "cash",
+    "amount_tendered": "578.84",
+    "change_due": "0.00",
+    "settled_at": "2026-09-30T14:02:39.866Z"
+  }
+},
+{
+  "model": "pos.settlement",
+  "pk": 2,
+  "fields": {
+    "order": 7,
+    "cashier": [
+      "Aliahmed"
+    ],
+    "payment_method": "card",
+    "amount_tendered": "752.84",
+    "change_due": "0.00",
+    "settled_at": "2026-09-30T14:03:50.912Z"
+  }
+},
+{
+  "model": "pos.settlement",
+  "pk": 3,
+  "fields": {
+    "order": 5,
+    "cashier": [
+      "awais"
+    ],
+    "payment_method": "cash",
+    "amount_tendered": "868.84",
+    "change_due": "0.00",
+    "settled_at": "2026-10-01T11:38:03.984Z"
+  }
+},
+{
+  "model": "pos.settlement",
+  "pk": 4,
+  "fields": {
+    "order": 8,
+    "cashier": [
+      "awais"
+    ],
+    "payment_method": "cash",
+    "amount_tendered": "868.84",
+    "change_due": "0.00",
+    "settled_at": "2026-10-01T11:38:06.681Z"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 1,
+  "fields": {
+    "action_time": "2026-09-19T08:04:31.331Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "category"
+    ],
+    "object_id": "1",
+    "object_repr": "Burgers",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 2,
+  "fields": {
+    "action_time": "2026-09-19T08:12:40.761Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "category"
+    ],
+    "object_id": "1",
+    "object_repr": "Burgers",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Order\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 3,
+  "fields": {
+    "action_time": "2026-09-19T11:46:31.086Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "1",
+    "object_repr": "Chicken Wings (6 pcs) (Appetizers)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 4,
+  "fields": {
+    "action_time": "2026-09-19T11:50:03.838Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "1",
+    "object_repr": "Chicken Wings (6 pcs) (Appetizers)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 5,
+  "fields": {
+    "action_time": "2026-09-19T12:01:00.625Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "2",
+    "object_repr": "Nashville Tenders (3 pcs) (Appetizers)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 6,
+  "fields": {
+    "action_time": "2026-09-19T12:03:51.482Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "3",
+    "object_repr": "Plain Fries (Appetizers)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 7,
+  "fields": {
+    "action_time": "2026-09-19T12:06:10.819Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "4",
+    "object_repr": "Masalla Fries (Appetizers)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 8,
+  "fields": {
+    "action_time": "2026-09-19T12:13:30.017Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "5",
+    "object_repr": "Loaded Fries (Appetizers)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 9,
+  "fields": {
+    "action_time": "2026-09-19T12:17:20.300Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "6",
+    "object_repr": "Chicken Dumplings (Appetizers)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 10,
+  "fields": {
+    "action_time": "2026-09-19T12:18:26.029Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "7",
+    "object_repr": "Hot & Sour Soup (Appetizers)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 11,
+  "fields": {
+    "action_time": "2026-09-19T12:20:09.142Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "8",
+    "object_repr": "Corn Soup (Appetizers)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 12,
+  "fields": {
+    "action_time": "2026-09-19T13:57:39.787Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "9",
+    "object_repr": "Zing Wing Wrap (Wraps)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 13,
+  "fields": {
+    "action_time": "2026-09-19T13:58:17.635Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "9",
+    "object_repr": "Zing Wing Wrap (Wraps)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 14,
+  "fields": {
+    "action_time": "2026-09-19T13:59:30.706Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "10",
+    "object_repr": "Mexican Wrap (Wraps)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 15,
+  "fields": {
+    "action_time": "2026-09-19T14:02:20.024Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "11",
+    "object_repr": "Special Loaded Wrap (Wraps)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 16,
+  "fields": {
+    "action_time": "2026-09-19T14:03:57.224Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "12",
+    "object_repr": "Chicken Tikka (Pizza)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 17,
+  "fields": {
+    "action_time": "2026-09-19T14:06:55.773Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "13",
+    "object_repr": "Chicken Fajita (Pizza)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 18,
+  "fields": {
+    "action_time": "2026-09-19T14:08:45.832Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "14",
+    "object_repr": "Chicken Cheese Lover (Pizza)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 19,
+  "fields": {
+    "action_time": "2026-09-19T14:12:04.456Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "15",
+    "object_repr": "Chicken Supreme (Pizza)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 20,
+  "fields": {
+    "action_time": "2026-09-19T14:17:39.479Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "16",
+    "object_repr": "Smokey Barbeque (Pizza)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 21,
+  "fields": {
+    "action_time": "2026-09-19T14:20:40.258Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "17",
+    "object_repr": "Crown Crust (Pizza)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 22,
+  "fields": {
+    "action_time": "2026-09-19T14:34:49.619Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "18",
+    "object_repr": "Classic Smash (Beef Burgers)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 23,
+  "fields": {
+    "action_time": "2026-09-19T14:36:24.744Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "19",
+    "object_repr": "Swiss Mushroom (Beef Burgers)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 24,
+  "fields": {
+    "action_time": "2026-09-19T14:38:39.329Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "19",
+    "object_repr": "Swiss Mushroom (Beef Burgers)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 25,
+  "fields": {
+    "action_time": "2026-09-19T14:44:47.842Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "20",
+    "object_repr": "Sweet & Smoky BBQ (Beef Burgers)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 26,
+  "fields": {
+    "action_time": "2026-09-19T14:47:47.461Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "21",
+    "object_repr": "Spicy Jalapeño (Beef Burgers)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 27,
+  "fields": {
+    "action_time": "2026-09-19T14:48:54.902Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "22",
+    "object_repr": "Grilled Special (Beef Burgers)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 28,
+  "fields": {
+    "action_time": "2026-09-19T14:50:15.834Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "23",
+    "object_repr": "Nashville Burger (Chicken Burgers)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 29,
+  "fields": {
+    "action_time": "2026-09-19T14:51:57.372Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "24",
+    "object_repr": "Ultimate Crispy Burger (Chicken Burgers)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 30,
+  "fields": {
+    "action_time": "2026-09-19T14:53:01.292Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "25",
+    "object_repr": "Jalapeño Popper Burger (Chicken Burgers)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 31,
+  "fields": {
+    "action_time": "2026-09-19T14:55:12.127Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "24",
+    "object_repr": "Ultimate Crispy Burger (Chicken Burgers)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 32,
+  "fields": {
+    "action_time": "2026-09-19T14:55:28.868Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "25",
+    "object_repr": "Jalapeño Popper Burger (Chicken Burgers)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 33,
+  "fields": {
+    "action_time": "2026-09-19T14:56:57.012Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "26",
+    "object_repr": "BBQ Crunch Burger (Chicken Burgers)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 34,
+  "fields": {
+    "action_time": "2026-09-19T14:58:18.017Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "27",
+    "object_repr": "Grilled Swiss Mushroom Burger (Chicken Burgers)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 35,
+  "fields": {
+    "action_time": "2026-09-19T15:00:13.588Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "28",
+    "object_repr": "Mac & Cheese Creamy Pasta (Pasta)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 36,
+  "fields": {
+    "action_time": "2026-09-19T15:01:04.074Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "29",
+    "object_repr": "Chicken Alfredo (Pasta)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 37,
+  "fields": {
+    "action_time": "2026-09-19T15:02:15.667Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "30",
+    "object_repr": "Pasta Lavista (Pasta)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 38,
+  "fields": {
+    "action_time": "2026-09-19T15:03:11.563Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "31",
+    "object_repr": "Special Pasta (Pasta)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 39,
+  "fields": {
+    "action_time": "2026-09-19T15:05:35.554Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "32",
+    "object_repr": "Fish & Chips (Seafood)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 40,
+  "fields": {
+    "action_time": "2026-09-19T15:06:40.206Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "32",
+    "object_repr": "Fish & Chips (Seafood)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 41,
+  "fields": {
+    "action_time": "2026-09-19T15:07:00.810Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "33",
+    "object_repr": "Dynamite Prawns (Seafood)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 42,
+  "fields": {
+    "action_time": "2026-09-19T15:08:43.003Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "34",
+    "object_repr": "Prawn Tempura (Seafood)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 43,
+  "fields": {
+    "action_time": "2026-09-19T15:11:32.943Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "35",
+    "object_repr": "Vegetable Fried Rice (Fried Rice)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 44,
+  "fields": {
+    "action_time": "2026-09-19T15:11:48.226Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "36",
+    "object_repr": "Chicken Fried Rice (Fried Rice)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 45,
+  "fields": {
+    "action_time": "2026-09-19T15:12:04.734Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "37",
+    "object_repr": "Egg Fried Rice (Fried Rice)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 46,
+  "fields": {
+    "action_time": "2026-09-19T15:12:16.506Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "38",
+    "object_repr": "Shangyaki Special Fried Rice (Fried Rice)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 47,
+  "fields": {
+    "action_time": "2026-09-19T15:14:21.215Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "36",
+    "object_repr": "Chicken Fried Rice (Fried Rice)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 48,
+  "fields": {
+    "action_time": "2026-09-19T15:16:17.581Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "37",
+    "object_repr": "Egg Fried Rice (Fried Rice)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 49,
+  "fields": {
+    "action_time": "2026-09-19T15:16:31.776Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "38",
+    "object_repr": "Shangyaki Special Fried Rice (Fried Rice)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 50,
+  "fields": {
+    "action_time": "2026-09-19T15:19:11.915Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "39",
+    "object_repr": "Vegetable Chow Mein (Chow Mein)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 51,
+  "fields": {
+    "action_time": "2026-09-19T15:20:43.219Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "40",
+    "object_repr": "Chicken Chow Mein (Chow Mein)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 52,
+  "fields": {
+    "action_time": "2026-09-19T15:21:17.399Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "41",
+    "object_repr": "Shangyaki Special Chow Mein (Chow Mein)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 53,
+  "fields": {
+    "action_time": "2026-09-19T15:51:34.118Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "42",
+    "object_repr": "Chicken Chilli Dry (Main Course)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 54,
+  "fields": {
+    "action_time": "2026-09-19T15:51:46.062Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "43",
+    "object_repr": "Chicken Manchurian (Main Course)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 55,
+  "fields": {
+    "action_time": "2026-09-19T15:56:04.782Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "44",
+    "object_repr": "Chicken Schezwan (Main Course)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 56,
+  "fields": {
+    "action_time": "2026-09-19T17:15:27.438Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "45",
+    "object_repr": "Dragon Chicken (Main Course)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 57,
+  "fields": {
+    "action_time": "2026-09-19T17:16:07.706Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "44",
+    "object_repr": "Chicken Schezwan (Main Course)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 58,
+  "fields": {
+    "action_time": "2026-09-19T17:16:22.894Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "43",
+    "object_repr": "Chicken Manchurian (Main Course)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 59,
+  "fields": {
+    "action_time": "2026-09-19T17:23:32.092Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "43",
+    "object_repr": "Chicken Manchurian (Main Course)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 60,
+  "fields": {
+    "action_time": "2026-09-19T17:24:26.069Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "46",
+    "object_repr": "Kung Pao Chicken (Main Course)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 61,
+  "fields": {
+    "action_time": "2026-09-19T17:24:41.954Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "47",
+    "object_repr": "Cashew Nut Chicken (Main Course)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 62,
+  "fields": {
+    "action_time": "2026-09-19T17:24:56.085Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "48",
+    "object_repr": "Black Pepper Chicken (Main Course)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 63,
+  "fields": {
+    "action_time": "2026-09-19T17:25:20.303Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "49",
+    "object_repr": "Chicken Garlic (Main Course)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 64,
+  "fields": {
+    "action_time": "2026-09-19T17:28:26.966Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "47",
+    "object_repr": "Cashew Nut Chicken (Main Course)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 65,
+  "fields": {
+    "action_time": "2026-09-19T17:30:01.394Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "50",
+    "object_repr": "Kung Pao Beef (Main Course)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 66,
+  "fields": {
+    "action_time": "2026-09-19T17:30:19.761Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "52",
+    "object_repr": "Mongolian Beef (Main Course)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 67,
+  "fields": {
+    "action_time": "2026-09-19T17:30:40.151Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "51",
+    "object_repr": "Beef Chilli Dry (Main Course)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 68,
+  "fields": {
+    "action_time": "2026-09-19T17:35:34.790Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "52",
+    "object_repr": "Mongolian Beef (Main Course)",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 69,
+  "fields": {
+    "action_time": "2026-09-19T17:35:47.903Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "53",
+    "object_repr": "Cola Next / Pepsi (Beverages)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 70,
+  "fields": {
+    "action_time": "2026-09-19T17:35:59.706Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "54",
+    "object_repr": "Mint Margarita (Beverages)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 71,
+  "fields": {
+    "action_time": "2026-09-19T17:36:10.381Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "55",
+    "object_repr": "Mineral Water (Beverages)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 72,
+  "fields": {
+    "action_time": "2026-09-19T17:38:20.443Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "53",
+    "object_repr": "Cola Next / Pepsi (Beverages)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 73,
+  "fields": {
+    "action_time": "2026-09-19T17:38:32.922Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "54",
+    "object_repr": "Mint Margarita (Beverages)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 74,
+  "fields": {
+    "action_time": "2026-09-19T17:38:44.484Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "55",
+    "object_repr": "Mineral Water (Beverages)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 75,
+  "fields": {
+    "action_time": "2026-09-19T17:38:52.954Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "menuitem"
+    ],
+    "object_id": "54",
+    "object_repr": "Mint Margarita (Beverages)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 76,
+  "fields": {
+    "action_time": "2026-09-19T17:50:34.419Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "deal"
+    ],
+    "object_id": "1",
+    "object_repr": "Student Deal",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Description\", \"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 77,
+  "fields": {
+    "action_time": "2026-09-19T17:52:45.422Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "deal"
+    ],
+    "object_id": "1",
+    "object_repr": "Student Deal",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 78,
+  "fields": {
+    "action_time": "2026-09-19T17:53:45.099Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "deal"
+    ],
+    "object_id": "1",
+    "object_repr": "Student Deal",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Price\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 79,
+  "fields": {
+    "action_time": "2026-09-19T17:54:11.235Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "deal"
+    ],
+    "object_id": "1",
+    "object_repr": "Student Deal",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Price\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 80,
+  "fields": {
+    "action_time": "2026-09-19T18:02:01.831Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "deal"
+    ],
+    "object_id": "2",
+    "object_repr": "Burger Deal (2 Persons)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Description\", \"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 81,
+  "fields": {
+    "action_time": "2026-09-19T18:02:11.940Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "deal"
+    ],
+    "object_id": "3",
+    "object_repr": "Smash Lovers Deal",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Description\", \"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 82,
+  "fields": {
+    "action_time": "2026-09-19T18:02:24.941Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "deal"
+    ],
+    "object_id": "4",
+    "object_repr": "Pizza Deal 1",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Description\", \"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 83,
+  "fields": {
+    "action_time": "2026-09-19T18:02:35.213Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "deal"
+    ],
+    "object_id": "5",
+    "object_repr": "Pizza Deal 2",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Description\", \"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 84,
+  "fields": {
+    "action_time": "2026-09-19T18:02:48.605Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "deal"
+    ],
+    "object_id": "6",
+    "object_repr": "Family Pizza Deal",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Description\", \"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 85,
+  "fields": {
+    "action_time": "2026-09-19T18:03:00.291Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "deal"
+    ],
+    "object_id": "7",
+    "object_repr": "Chinese Deal 1",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Description\", \"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 86,
+  "fields": {
+    "action_time": "2026-09-19T18:03:10.933Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "deal"
+    ],
+    "object_id": "8",
+    "object_repr": "Chinese Deal 2",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Description\", \"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 87,
+  "fields": {
+    "action_time": "2026-09-19T18:03:20.490Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "deal"
+    ],
+    "object_id": "9",
+    "object_repr": "Chinese Deal 3",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Description\", \"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 88,
+  "fields": {
+    "action_time": "2026-09-19T18:03:30.870Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "menu",
+      "deal"
+    ],
+    "object_id": "10",
+    "object_repr": "Chinese Deal 4",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Description\", \"Image url\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 89,
+  "fields": {
+    "action_time": "2026-09-27T06:59:21.295Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "auth",
+      "user"
+    ],
+    "object_id": "2",
+    "object_repr": "Ali",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 90,
+  "fields": {
+    "action_time": "2026-09-27T07:17:15.246Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "auth",
+      "user"
+    ],
+    "object_id": "3",
+    "object_repr": "Aliahmed",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 91,
+  "fields": {
+    "action_time": "2026-09-27T07:25:33.227Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "auth",
+      "user"
+    ],
+    "object_id": "3",
+    "object_repr": "Aliahmed",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"password\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 92,
+  "fields": {
+    "action_time": "2026-09-27T07:26:44.494Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "auth",
+      "user"
+    ],
+    "object_id": "3",
+    "object_repr": "Aliahmed",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"User permissions\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 93,
+  "fields": {
+    "action_time": "2026-09-27T16:33:33.177Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "pos",
+      "order"
+    ],
+    "object_id": "4",
+    "object_repr": "Order #4 (open)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 94,
+  "fields": {
+    "action_time": "2026-09-27T16:33:33.177Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "pos",
+      "order"
+    ],
+    "object_id": "3",
+    "object_repr": "Order #3 (open)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 95,
+  "fields": {
+    "action_time": "2026-09-27T16:33:33.178Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "pos",
+      "order"
+    ],
+    "object_id": "2",
+    "object_repr": "Order #2 (open)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 96,
+  "fields": {
+    "action_time": "2026-09-27T16:33:33.178Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "pos",
+      "order"
+    ],
+    "object_id": "1",
+    "object_repr": "Order #1 (open)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 97,
+  "fields": {
+    "action_time": "2026-09-27T16:33:49.040Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "pos",
+      "shift"
+    ],
+    "object_id": "1",
+    "object_repr": "Shift #1 - Aliahmed (open)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 98,
+  "fields": {
+    "action_time": "2026-09-27T16:35:50.421Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "auth",
+      "user"
+    ],
+    "object_id": "4",
+    "object_repr": "awais",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+}
+]

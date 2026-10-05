@@ -37,7 +37,7 @@ export default function Header() {
 
         <a href="/" className="flex items-center gap-2 shrink-0">
           <Image
-            src="/images/logo.png"
+            src="/images/logo.jpeg"
             alt="Wok & Bun"
             width={250}
             height={50}

@@ -44,6 +44,12 @@ class OrderItem(models.Model):
     unit_price = models.DecimalField(max_digits=10, decimal_places=2)
     quantity = models.PositiveIntegerField(default=1)
     line_total = models.DecimalField(max_digits=10, decimal_places=2)
+    # Snapshot fields above (name/size/price) are what the customer was
+    # charged and never change. These links tie the line back to the live
+    # menu so reports and stock can group by real items.
+    menu_item = models.ForeignKey("menu.MenuItem", null=True, blank=True, on_delete=models.SET_NULL, related_name="+")
+    price = models.ForeignKey("menu.MenuItemPrice", null=True, blank=True, on_delete=models.SET_NULL, related_name="+")
+    deal = models.ForeignKey("menu.Deal", null=True, blank=True, on_delete=models.SET_NULL, related_name="+")
 
     def __str__(self):
         return f"{self.quantity} x {self.item_name}"
