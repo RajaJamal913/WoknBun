@@ -4,6 +4,7 @@ from .views import (
     OpenShiftView, CloseShiftView, CurrentShiftView,
     OrderListCreateView, SettleOrderView, RefundOrderView, CancelOrderView,
 )
+from .online_views import OnlineOrderActionView, OnlineOrderListView, OnlineOrderSummaryView
 from .report_views import (
     MeView, DashboardView, SalesSummaryView, SalesReportView, HourlySalesView, CancellationReportView,
 )
@@ -24,4 +25,7 @@ urlpatterns = [
     path("pos/reports/sales/", SalesReportView.as_view(), name="pos-report-sales"),
     path("pos/reports/hourly/", HourlySalesView.as_view(), name="pos-report-hourly"),
     path("pos/reports/cancellations/", CancellationReportView.as_view(), name="pos-report-cancellations"),
+    path("pos/online-orders/", OnlineOrderListView.as_view(), name="pos-online-list"),
+    path("pos/online-orders/summary/", OnlineOrderSummaryView.as_view(), name="pos-online-summary"),
+    path("pos/online-orders/<int:order_id>/<str:action>/", OnlineOrderActionView.as_view(), name="pos-online-action"),
 ]

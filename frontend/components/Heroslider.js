@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
+import { asset } from "@/lib/assets";
 
 const SLIDES = [
-  { id: "1", cta: "Order Now", href: "#beef-burgers", image: "/images/1.png" },
-  { id: "2", cta: "Order Now", href: "#appetizers", image: "/images/2.png" },
-  { id: "3", cta: "Order Now", href: "#pizza", image: "/images/3.png" },
-  { id: "4", cta: "Order Now", href: "#main-course", image: "/images/4.png" },
-  { id: "5", cta: "Order Now", href: "#popular", image: "/images/5.png" },
+  { id: "1", cta: "Order Now", href: "#beef-burgers", image: asset("/images/1.png") },
+  { id: "2", cta: "Order Now", href: "#appetizers", image: asset("/images/2.png") },
+  { id: "3", cta: "Order Now", href: "#pizza", image: asset("/images/3.png") },
+  { id: "4", cta: "Order Now", href: "#main-course", image: asset("/images/4.png") },
+  { id: "5", cta: "Order Now", href: "#popular", image: asset("/images/5.png") },
 ];
 
 const AUTOPLAY_MS = 6000;
@@ -54,7 +55,12 @@ export default function HeroSlider() {
             style={{ opacity: i === index ? 1 : 0 }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={s.image} alt="" className="absolute inset-0 w-full h-full object-cover object-center" />
+            <img
+              src={s.image}
+              alt=""
+              loading={i === 0 ? "eager" : "lazy"}
+              className="absolute inset-0 w-full h-full object-cover object-center"
+            />
           </div>
         ))}
 

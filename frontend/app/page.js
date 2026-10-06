@@ -5,7 +5,7 @@ import ItemCard from "@/components/ItemCard";
 import DealCard from "@/components/DealCard";
 import Image from "next/image";
 export const dynamic = "force-dynamic";
-
+import { asset } from "@/lib/assets";
 function SectionTitle({ children }) {
   return (
     <h2 className="font-display font-extrabold text-2xl md:text-3xl tracking-tight mb-5 flex items-center gap-3">
@@ -101,13 +101,13 @@ export default async function HomePage() {
         <div className="max-w-7xl mx-auto px-4 md:px-8 py-12 grid sm:grid-cols-2 md:grid-cols-4 gap-10 text-sm">
           <div className="sm:col-span-2 md:col-span-1">
             <div className="flex items-center gap-2 mb-3">
-             <Image
-  src="/images/logo.jpeg"
-  alt="Wok & Bun"
-  width={250}
-  height={50}
-  className="h-9 sm:h-12 md:h-16 w-auto object-contain"
-/>
+                         <Image
+              src={asset("/images/logo.jpeg")}
+              alt="Wok & Bun"
+              width={250}
+              height={50}
+              className="h-11 sm:h-14 md:h-18 w-auto object-contain"
+            />
               <h3 className="font-display font-extrabold text-lg">Wok &amp; Bun</h3>
             </div>
             <p className="text-muted leading-relaxed">

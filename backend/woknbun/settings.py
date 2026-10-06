@@ -18,7 +18,7 @@ SECRET_KEY = "dev-secret-key-change-me-in-production"
 
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["www.woknbun.com", "woknbun.com", "localhost", "127.0.0.1"]
 
 INSTALLED_APPS = [
     "django.contrib.admin",

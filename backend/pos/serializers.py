@@ -33,6 +33,7 @@ class OrderSerializer(serializers.ModelSerializer):
     # A duplicate client_order_id is an expected, valid case (a retried sync),
     # not a validation error - create() returns the existing order for it.
     client_order_id = serializers.UUIDField(validators=[])
+    online = serializers.SerializerMethodField()
     discount_amount = serializers.DecimalField(
         max_digits=10, decimal_places=2, min_value=Decimal("0"), required=False, default=Decimal("0")
     )
@@ -40,20 +41,38 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = [
-            "id", "client_order_id", "shift", "order_type", "table_label", "status",
-            "subtotal", "discount_amount", "tax_amount", "grand_total",
-            "created_at", "settled_at", "items",
+            "id", "client_order_id", "shift", "order_type", "table_label", "status", "cancel_reason", "cancelled_at",
+            "subtotal", "discount_amount", "tax_amount", "delivery_charges", "grand_total",
+            "online", "created_at", "settled_at", "items",
         ]
         # Totals are computed by the server - never accepted from a client.
         read_only_fields = [
-            "id", "status", "subtotal", "tax_amount", "grand_total",
-            "created_at", "settled_at",
+            "id", "status", "subtotal", "tax_amount", "delivery_charges", "grand_total",
+            "cancel_reason", "cancelled_at", "created_at", "settled_at",
         ]
 
     def validate_items(self, value):
         if not value:
             raise serializers.ValidationError("An order needs at least one item.")
         return value
+
+    def get_online(self, obj):
+        """Customer details when this sale came from the website (else None)."""
+        w = obj.online_order
+        if w is None:
+            return None
+        return {"id": w.id, "full_name": w.full_name, "mobile_number": w.mobile_number,
+                "address_line": w.address_line, "special_instructions": w.special_instructions}
+
+    def validate(self, attrs):
+        if attrs.get("order_type") == "online":
+            raise serializers.ValidationError({"order_type": "Online orders come from the website - accept them in Online Orders."})
+        # The kitchen and waiters find a dine-in order by its table.
+        table = (attrs.get("table_label") or "").strip()
+        if attrs.get("order_type") == "dine_in" and not table:
+            raise serializers.ValidationError({"table_label": "Enter the table for a dine-in order."})
+        attrs["table_label"] = table if attrs.get("order_type") == "dine_in" else ""
+        return attrs
 
     def _user(self):
         return self.context["request"].user
@@ -125,6 +144,10 @@ class SettlementSerializer(serializers.ModelSerializer):
         model = Settlement
         fields = ["id", "order", "cashier", "payment_method", "amount_tendered", "change_due", "settled_at"]
         read_only_fields = fields
+
+
+class CancelOrderSerializer(serializers.Serializer):
+    reason = serializers.CharField(required=False, allow_blank=True, max_length=255)
 
 
 class RefundOrderSerializer(serializers.Serializer):

@@ -47,7 +47,7 @@ class Order(models.Model):
     separate from orders.Order (the online-delivery model) - different
     lifecycle, different fields (shift, table, settlement, refund).
     """
-    ORDER_TYPE_CHOICES = [("dine_in", "Dine In"), ("takeaway", "Takeaway"), ("counter", "Counter")]
+    ORDER_TYPE_CHOICES = [("dine_in", "Dine In"), ("takeaway", "Takeaway"), ("counter", "Counter"), ("online", "Online")]
     STATUS_CHOICES = [
         ("open", "Open"),
         ("settled", "Settled"),
@@ -63,12 +63,19 @@ class Order(models.Model):
     shift = models.ForeignKey(Shift, on_delete=models.PROTECT, related_name="orders")
     order_type = models.CharField(max_length=10, choices=ORDER_TYPE_CHOICES, default="counter")
     table_label = models.CharField(max_length=40, blank=True)
+    cancel_reason = models.CharField(max_length=255, blank=True)
+    cancelled_at = models.DateTimeField(null=True, blank=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="open")
 
     subtotal = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     discount_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     tax_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    delivery_charges = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     grand_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+
+    # Set when this sale was created by accepting a website order. PROTECT: a
+    # website order that has a sale on the books can't be deleted underneath it.
+    online_order = models.OneToOneField("orders.Order", null=True, blank=True, on_delete=models.PROTECT, related_name="pos_order")
 
     created_at = models.DateTimeField(auto_now_add=True)
     settled_at = models.DateTimeField(null=True, blank=True)

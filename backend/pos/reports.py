@@ -12,7 +12,7 @@ from datetime import datetime, time, timedelta
 from decimal import Decimal
 
 from django.db.models import Count, Sum
-from django.db.models.functions import ExtractHour
+from django.db.models.functions import Coalesce, ExtractHour
 from django.utils import timezone
 
 from .models import Order, OrderItem, Refund, Settlement, Shift
@@ -40,6 +40,15 @@ def _net(start, end):
     return Order.objects.filter(status="settled", settled_at__gte=start, settled_at__lt=end)
 
 
+def _cancelled(start, end):
+    """Orders cancelled in [start, end). Older rows with no cancelled_at fall back to created_at."""
+    return (
+        Order.objects.filter(status="cancelled")
+        .annotate(cancelled_when=Coalesce("cancelled_at", "created_at"))
+        .filter(cancelled_when__gte=start, cancelled_when__lt=end)
+    )
+
+
 def sales_summary(date_from, date_to):
     start, end = day_range(date_from, date_to)
     sold = _sold(start, end)
@@ -48,6 +57,7 @@ def sales_summary(date_from, date_to):
         items_total=Sum("subtotal"),
         discounts=Sum("discount_amount"),
         tax=Sum("tax_amount"),
+        delivery=Sum("delivery_charges"),
         total_sales=Sum("grand_total"),
     )
     refunds = Refund.objects.filter(refunded_at__gte=start, refunded_at__lt=end).aggregate(
@@ -67,7 +77,7 @@ def sales_summary(date_from, date_to):
         for r in Settlement.objects.filter(order__in=sold)
         .values("payment_method").annotate(n=Count("id"), t=Sum("order__grand_total")).order_by("-t")
     ]
-    cancelled = Order.objects.filter(status="cancelled", created_at__gte=start, created_at__lt=end).count()
+    cancelled = _cancelled(start, end).count()
 
     return {
         "from": date_from.isoformat(), "to": date_to.isoformat(),
@@ -75,6 +85,7 @@ def sales_summary(date_from, date_to):
         "items_total": _money(agg["items_total"]),
         "discounts": _money(agg["discounts"]),
         "tax": _money(agg["tax"]),
+        "delivery_charges": _money(agg["delivery"]),
         "total_sales": _money(total_sales),
         "refunds_count": refunds["count"] or 0,
         "refunds_total": _money(refunds_total),
@@ -138,8 +149,8 @@ def cancellations(date_from, date_to):
     """
     start, end = day_range(date_from, date_to)
     cancelled = (
-        Order.objects.filter(status="cancelled", created_at__gte=start, created_at__lt=end)
-        .select_related("shift__cashier").prefetch_related("items").order_by("-created_at")
+        _cancelled(start, end)
+        .select_related("shift__cashier").prefetch_related("items").order_by("-cancelled_when")
     )
     refunds = (
         Refund.objects.filter(refunded_at__gte=start, refunded_at__lt=end)
@@ -147,7 +158,8 @@ def cancellations(date_from, date_to):
     )
     cancelled_rows = [
         {
-            "order_id": o.id, "time": o.created_at.isoformat(), "order_type": o.order_type,
+            "order_id": o.id, "time": o.cancelled_when.isoformat(), "order_type": o.order_type,
+            "table": o.table_label, "reason": o.cancel_reason,
             "cashier": o.shift.cashier.get_full_name() or o.shift.cashier.get_username(),
             "items": ", ".join(f"{i.quantity}x {i.item_name}" for i in o.items.all()),
             "total": _money(o.grand_total),

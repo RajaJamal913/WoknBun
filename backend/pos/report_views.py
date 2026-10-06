@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 
 from . import reports
 from .permissions import (
-    CanViewDashboard, CanViewReports, IsPOSStaff, can_take_orders, can_view_dashboard,
+    CanViewDashboard, CanViewReports, IsPOSStaff, can_discount, can_take_orders, can_view_dashboard,
     can_view_reports, staff_role,
 )
 
@@ -50,6 +50,7 @@ class MeView(APIView):
             "can_view_dashboard": can_view_dashboard(u),
             "can_view_reports": can_view_reports(u),
             "can_take_orders": can_take_orders(u),
+            "can_discount": can_discount(u),
         })
 
 

@@ -1,0 +1,1 @@
+export const asset = (path) => `${process.env.NEXT_PUBLIC_ASSET_URL || ""}${path}`;

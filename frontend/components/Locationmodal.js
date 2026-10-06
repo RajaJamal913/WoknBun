@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { useLocation } from "@/context/LocationContext";
-
+import { asset } from "@/lib/assets";
 // Areas within roughly 50km of DHA Phase II, Islamabad.
 // Grouped so the dropdown is easier to scan; adjust freely as your
 // actual delivery radius or rider coverage changes.
@@ -126,14 +126,16 @@ export default function LocationModal() {
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/80" />
       <div className="relative w-full max-w-sm bg-surface border border-border rounded-2xl p-6 flex flex-col items-center text-center gap-4">
-        <Image
-          src="/images/logo.jpeg"
-          alt="Wok & Bun"
-          width={200}
-          height={60}
-          className="h-16 w-auto object-contain"
-          priority
-        />
+                <a href="/" className="flex items-center gap-2 shrink-0">
+  <Image
+    src={asset("/images/logo.jpeg")}
+    alt="Wok & Bun"
+    width={250}
+    height={250}
+    className="h-14 sm:h-20 md:h-24 w-auto object-contain"
+    priority
+  />
+</a>
         <div>
           <p className="text-muted text-sm mt-1">
             Delivering from DHA Phase II, Islamabad — where should we send your order?

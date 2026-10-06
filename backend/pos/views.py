@@ -12,7 +12,7 @@ from .permissions import (
     CanRefund, IsCashierOrAbove, IsPOSStaff, is_manager, owns_shift, staff_role,
 )
 from .serializers import (
-    CloseShiftSerializer, OpenShiftSerializer, OrderSerializer, RefundOrderSerializer,
+    CancelOrderSerializer, CloseShiftSerializer, OpenShiftSerializer, OrderSerializer, RefundOrderSerializer,
     RefundSerializer, SettleOrderSerializer, SettlementSerializer, ShiftSerializer,
 )
 
@@ -90,7 +90,7 @@ class OrderListCreateView(generics.ListCreateAPIView):
         return [IsPOSStaff()] if self.request.method == "GET" else [IsCashierOrAbove()]
 
     def get_queryset(self):
-        qs = Order.objects.all().select_related("shift").prefetch_related("items")
+        qs = Order.objects.all().select_related("shift", "online_order").prefetch_related("items")
         # Cashiers see only their own shifts' orders; managers/admin/kitchen see all.
         if staff_role(self.request.user) == "cashier":
             qs = qs.filter(shift__cashier=self.request.user)
@@ -112,6 +112,8 @@ class SettleOrderView(APIView):
             order = _locked_order(order_id)
             if not owns_shift(request.user, order.shift):
                 raise PermissionDenied("This order belongs to another cashier's shift.")
+            if order.online_order_id:
+                return _bad_request("This is a website order - use Online Orders to deliver or cancel it.")
             if order.status != "open":
                 return _bad_request(f"Cannot settle an order with status '{order.status}'.")
 
@@ -169,13 +171,18 @@ class CancelOrderView(APIView):
     permission_classes = [IsCashierOrAbove]
 
     def post(self, request, order_id):
+        serializer = CancelOrderSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
         with transaction.atomic():
             order = _locked_order(order_id)
             if not owns_shift(request.user, order.shift):
                 raise PermissionDenied("This order belongs to another cashier's shift.")
+            if order.online_order_id:
+                return _bad_request("This is a website order - use Online Orders to deliver or cancel it.")
             if order.status != "open":
                 return _bad_request("Only an unpaid (open) order can be cancelled.")
             order.status = "cancelled"
-            order.save(update_fields=["status"])
+            order.cancel_reason = serializer.validated_data.get("reason", "").strip()
+            order.cancelled_at = timezone.now()
+            order.save(update_fields=["status", "cancel_reason", "cancelled_at"])
         return Response(OrderSerializer(order).data, status=status.HTTP_200_OK)
-

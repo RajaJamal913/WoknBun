@@ -6,6 +6,7 @@ import { useLocation } from "@/context/LocationContext";
 import { useSearch } from "@/context/SearchContext";
 import { useUser } from "@/context/UserContext";
 import Image from "next/image";
+import { asset } from "@/lib/assets";
 
 export default function Header() {
   const { itemCount, setDrawerOpen } = useCart();
@@ -35,16 +36,16 @@ export default function Header() {
           <span className="text-accent shrink-0 text-xs">▾</span>
         </button>
 
-        <a href="/" className="flex items-center gap-2 shrink-0">
-          <Image
-            src="/images/logo.jpeg"
-            alt="Wok & Bun"
-            width={250}
-            height={50}
-            className="h-9 sm:h-12 md:h-16 w-auto object-contain"
-            priority
-          />
-        </a>
+        <a href="/" className="flex items-center gap-2 shrink-0 -my-1 md:-my-3">
+  <Image
+    src={asset("/images/logo.jpeg")}
+    alt="Wok & Bun"
+    width={300}
+    height={300}
+    className="h-16 sm:h-24 md:h-32 w-auto object-contain rounded-xl"
+    priority
+  />
+</a>
 
         <div className="flex items-center gap-1 sm:gap-2 shrink-0">
           <button aria-label="Search" onClick={() => setSearchOpen(true)} className={iconBtn}>
