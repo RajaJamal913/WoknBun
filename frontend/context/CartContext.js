@@ -1,9 +1,14 @@
 "use client";
 
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { getConfig } from "@/lib/api";
 
 const CartContext = createContext(null);
-const STORAGE_KEY = "wokandbun_cart_v1";
+// v2: lines now carry priceId/dealId (the server prices every order from them).
+// Old v1 carts have no ids and would be rejected, so they are dropped.
+const STORAGE_KEY = "wokandbun_cart_v2";
+// Display defaults only - overwritten from /api/config/. The server always
+// computes the real totals.
 export const DELIVERY_CHARGES = 250;
 export const TAX_RATE = 0.16;
 
@@ -15,6 +20,13 @@ export function CartProvider({ children }) {
   const [items, setItems] = useState([]);
   const [isDrawerOpen, setDrawerOpen] = useState(false);
   const [hydrated, setHydrated] = useState(false);
+  const [rates, setRates] = useState({ tax: TAX_RATE, delivery: DELIVERY_CHARGES });
+
+  useEffect(() => {
+    getConfig()
+      .then((c) => setRates({ tax: Number(c.tax_rate), delivery: Number(c.delivery_charges) }))
+      .catch(() => {}); // keep the display defaults
+  }, []);
 
   // Load from localStorage on mount
   useEffect(() => {
@@ -37,14 +49,14 @@ export function CartProvider({ children }) {
     }
   }, [items, hydrated]);
 
-  function addItem({ name, sizeLabel = "", unitPrice, image = "" }) {
+  function addItem({ name, sizeLabel = "", unitPrice, priceId = null, dealId = null, image = "" }) {
     const key = lineKey(name, sizeLabel);
     setItems((prev) => {
       const existing = prev.find((i) => i.key === key);
       if (existing) {
         return prev.map((i) => (i.key === key ? { ...i, quantity: i.quantity + 1 } : i));
       }
-      return [...prev, { key, name, sizeLabel, unitPrice, image, quantity: 1 }];
+      return [...prev, { key, name, sizeLabel, unitPrice, priceId, dealId, image, quantity: 1 }];
     });
     setDrawerOpen(true);
   }
@@ -69,8 +81,8 @@ export function CartProvider({ children }) {
     () => items.reduce((sum, i) => sum + i.unitPrice * i.quantity, 0),
     [items]
   );
-  const tax = useMemo(() => Math.round(subtotal * TAX_RATE * 100) / 100, [subtotal]);
-  const deliveryCharges = items.length ? DELIVERY_CHARGES : 0;
+  const tax = useMemo(() => Math.round(subtotal * rates.tax * 100) / 100, [subtotal, rates.tax]);
+  const deliveryCharges = items.length ? rates.delivery : 0;
   const grandTotal = subtotal + deliveryCharges + tax;
   const itemCount = items.reduce((sum, i) => sum + i.quantity, 0);
 
@@ -85,6 +97,7 @@ export function CartProvider({ children }) {
     deliveryCharges,
     grandTotal,
     itemCount,
+    taxRate: rates.tax,
     isDrawerOpen,
     setDrawerOpen,
   };

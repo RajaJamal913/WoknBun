@@ -82,12 +82,12 @@ export default function SearchModal() {
   function quickAddItem(item) {
     const price = item.prices?.[0];
     if (!price) return;
-    addItem({ name: item.name, sizeLabel: price.label, unitPrice: parseFloat(price.price) });
+    addItem({ name: item.name, sizeLabel: price.label, unitPrice: parseFloat(price.price), priceId: price.id });
     setSearchOpen(false);
   }
 
   function quickAddDeal(deal) {
-    addItem({ name: deal.name, sizeLabel: "Deal", unitPrice: parseFloat(deal.price) });
+    addItem({ name: deal.name, sizeLabel: "Deal", unitPrice: parseFloat(deal.price), dealId: deal.id });
     setSearchOpen(false);
   }
 

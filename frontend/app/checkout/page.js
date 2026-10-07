@@ -7,7 +7,7 @@ import { createOrder } from "@/lib/api";
 
 export default function CheckoutPage() {
   const router = useRouter();
-  const { items, subtotal, tax, deliveryCharges, grandTotal, clearCart } = useCart();
+  const { items, subtotal, tax, taxRate, deliveryCharges, grandTotal, clearCart } = useCart();
 
   const [form, setForm] = useState({
     fullName: "",
@@ -48,10 +48,9 @@ export default function CheckoutPage() {
         address_line: form.address,
         special_instructions: form.instructions,
         payment_method: "cod",
+        // Only ids + quantity: the server looks up the real prices.
         items: items.map((i) => ({
-          item_name: i.name,
-          size_label: i.sizeLabel,
-          unit_price: i.unitPrice,
+          ...(i.dealId ? { deal_id: i.dealId } : { price_id: i.priceId }),
           quantity: i.quantity,
         })),
       });
@@ -182,7 +181,7 @@ export default function CheckoutPage() {
               <span>Rs. {deliveryCharges.toLocaleString()}</span>
             </div>
             <div className="flex justify-between text-muted">
-              <span>Tax (16%)</span>
+              <span>Tax ({Math.round(taxRate * 100)}%)</span>
               <span>Rs. {tax.toLocaleString()}</span>
             </div>
             <div className="flex justify-between font-bold text-base pt-2 border-t border-border">

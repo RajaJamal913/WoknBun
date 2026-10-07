@@ -1,10 +1,13 @@
 """
 Django settings for the Wok & Bun ordering site backend.
 """
-from pathlib import Path
 import os
 import sys
+from datetime import timedelta
+from decimal import Decimal
+from pathlib import Path
 
+from django.core.exceptions import ImproperlyConfigured
 from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -14,11 +17,23 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # variables always win over the file.
 load_dotenv(BASE_DIR / ".env")
 
-SECRET_KEY = "dev-secret-key-change-me-in-production"
 
-DEBUG = True
+def _env_list(name):
+    return [v.strip() for v in os.environ.get(name, "").split(",") if v.strip()]
 
-ALLOWED_HOSTS = ["www.woknbun.com", "woknbun.com", "localhost", "127.0.0.1"]
+
+# ---- Security --------------------------------------------------------------
+# Defaults keep today's behaviour (development). For the live site put these in
+# backend/.env:   DJANGO_DEBUG=0   DJANGO_SECRET_KEY=<long random string>
+#                 CORS_ALLOWED_ORIGINS=https://www.woknbun.com,https://woknbun.com
+_DEV_SECRET = "dev-secret-key-change-me-in-production"
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", _DEV_SECRET)
+DEBUG = os.environ.get("DJANGO_DEBUG", "1") == "1"
+
+if not DEBUG and SECRET_KEY == _DEV_SECRET:
+    raise ImproperlyConfigured("Set DJANGO_SECRET_KEY in .env when DJANGO_DEBUG=0.")
+
+ALLOWED_HOSTS = ["www.woknbun.com", "woknbun.com", "localhost", "127.0.0.1"] + _env_list("DJANGO_ALLOWED_HOSTS")
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -110,10 +125,11 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# Allow the Next.js dev server (and any origin, for local dev) to call the API.
-CORS_ALLOW_ALL_ORIGINS = True
-
-from datetime import timedelta
+# Local development: any origin may call the API. With DJANGO_DEBUG=0 only the
+# origins listed in CORS_ALLOWED_ORIGINS may (the POS terminal is not a browser,
+# so it is not affected by CORS).
+CORS_ALLOW_ALL_ORIGINS = DEBUG
+CORS_ALLOWED_ORIGINS = _env_list("CORS_ALLOWED_ORIGINS")
 
 # JWT access tokens default to 5 minutes in simplejwt - far too short for a
 # cashier's shift. 30 minutes is a saner default; JWT_ACCESS_SECONDS lets
@@ -125,16 +141,29 @@ SIMPLE_JWT = {
 }
 
 REST_FRAMEWORK = {
+    # Secure by default: every endpoint needs a login unless it says otherwise.
+    # (The public ones - menu, website checkout, customer sign-in - opt in.)
     "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.AllowAny",
+        "rest_framework.permissions.IsAuthenticated",
     ],
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
         "rest_framework.authentication.SessionAuthentication",
     ],
+    # Limits per visitor (IP address). Both scopes MUST exist or those endpoints
+    # return a 500. These are generous for testing - for the live site set
+    # THROTTLE_ORDER_CREATE=20/hour and THROTTLE_CUSTOMER_AUTH=30/hour in .env.
+    "DEFAULT_THROTTLE_RATES": {
+        "order_create": os.environ.get("THROTTLE_ORDER_CREATE", "10/minute"),
+        "customer_auth": os.environ.get("THROTTLE_CUSTOMER_AUTH", "20/minute"),
+    },
 }
-from decimal import Decimal
 
+# ---- Business rules (the server is the source of truth for these) ----------
 TAX_RATE = Decimal("0.16")
 DELIVERY_CHARGES = Decimal("250.00")
-POS_REFUND_ROLES = ("manager", "admin")
+POS_REFUND_ROLES = ("manager", "admin")  # who may refund a settled order
+
+# Fast password hashing so the test suite doesn't spend its time in PBKDF2.
+if "test" in sys.argv:
+    PASSWORD_HASHERS = ["django.contrib.auth.hashers.MD5PasswordHasher"]

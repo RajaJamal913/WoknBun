@@ -7,7 +7,7 @@ export default function DealCard({ deal }) {
   const lines = deal.description.split("\n").filter(Boolean);
 
   function handleAdd() {
-    addItem({ name: deal.name, sizeLabel: "Deal", unitPrice: parseFloat(deal.price) });
+    addItem({ name: deal.name, sizeLabel: "Deal", unitPrice: parseFloat(deal.price), dealId: deal.id });
   }
 
   return (

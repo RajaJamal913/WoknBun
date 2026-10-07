@@ -21,6 +21,7 @@ export default function ItemCard({ item }) {
       name: item.name,
       sizeLabel: selectedPrice.label,
       unitPrice: parseFloat(selectedPrice.price),
+      priceId: selectedPrice.id,
     });
   }
 
