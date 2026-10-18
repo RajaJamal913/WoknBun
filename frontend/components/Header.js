@@ -6,13 +6,12 @@ import { useLocation } from "@/context/LocationContext";
 import { useSearch } from "@/context/SearchContext";
 import { useUser } from "@/context/UserContext";
 import Image from "next/image";
-import { asset } from "@/lib/assets";
 
 export default function Header() {
   const { itemCount, setDrawerOpen } = useCart();
   const { location, setModalOpen } = useLocation();
   const { setSearchOpen } = useSearch();
-  const { user, setAuthOpen, logout } = useUser();
+  const { user, setAuthOpen, setAccountOpen, logout } = useUser();
   const [menuOpen, setMenuOpen] = useState(false);
 
   const iconBtn =
@@ -36,16 +35,16 @@ export default function Header() {
           <span className="text-accent shrink-0 text-xs">▾</span>
         </button>
 
-        <a href="/" className="flex items-center gap-2 shrink-0 -my-1 md:-my-3">
-  <Image
-    src={asset("/images/logo.jpeg")}
-    alt="Wok & Bun"
-    width={300}
-    height={300}
-    className="h-16 sm:h-24 md:h-32 w-auto object-contain rounded-xl"
-    priority
-  />
-</a>
+        <a href="/" className="flex items-center gap-2 shrink-0">
+          <Image
+            src="/images/logo.jpeg"
+            alt="Wok & Bun"
+            width={250}
+            height={50}
+            className="h-9 sm:h-12 md:h-16 w-auto object-contain"
+            priority
+          />
+        </a>
 
         <div className="flex items-center gap-1 sm:gap-2 shrink-0">
           <button aria-label="Search" onClick={() => setSearchOpen(true)} className={iconBtn}>
@@ -67,10 +66,19 @@ export default function Header() {
               </svg>
             </button>
             {user && menuOpen && (
-              <div className="absolute right-0 top-full mt-2 w-44 glass rounded-xl shadow-card overflow-hidden z-20">
+              <div className="absolute right-0 top-full mt-2 w-48 glass rounded-xl shadow-card overflow-hidden z-20">
                 <p className="px-3 py-2 text-xs text-muted border-b border-white/10 truncate">
                   Hi, {user.full_name.split(" ")[0]}
                 </p>
+                <button
+                  onClick={() => {
+                    setAccountOpen(true);
+                    setMenuOpen(false);
+                  }}
+                  className="w-full text-left px-3 py-2 text-sm hover:bg-white/10 transition"
+                >
+                  My account &amp; orders
+                </button>
                 <button
                   onClick={() => {
                     logout();
@@ -78,7 +86,7 @@ export default function Header() {
                   }}
                   className="w-full text-left px-3 py-2 text-sm hover:bg-white/10 transition"
                 >
-                  Log out
+                  Sign out
                 </button>
               </div>
             )}

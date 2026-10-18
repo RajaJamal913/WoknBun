@@ -1,13 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
+import { useUser } from "@/context/UserContext";
 import { createOrder } from "@/lib/api";
 
 export default function CheckoutPage() {
   const router = useRouter();
   const { items, subtotal, tax, taxRate, deliveryCharges, grandTotal, clearCart } = useCart();
+  const { user, setAuthOpen, setAccountOpen } = useUser();
 
   const [form, setForm] = useState({
     fullName: "",
@@ -20,6 +22,17 @@ export default function CheckoutPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [placedOrder, setPlacedOrder] = useState(null);
+
+  // Signed in: fill in what we already know (only blank fields - never overwrite what they typed).
+  useEffect(() => {
+    if (!user) return;
+    setForm((f) => ({
+      ...f,
+      fullName: f.fullName || user.full_name || "",
+      mobileNumber: f.mobileNumber || user.phone || "",
+      email: f.email || user.email || "",
+    }));
+  }, [user]);
 
   function update(field) {
     return (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
@@ -74,6 +87,21 @@ export default function CheckoutPage() {
           Order #{placedOrder.id} confirmed. Grand total Rs. {Number(placedOrder.grand_total).toLocaleString()},
           payable by cash on delivery.
         </p>
+        {user ? (
+          <button
+            onClick={() => setAccountOpen(true)}
+            className="block mx-auto mb-3 text-accent2 font-semibold underline underline-offset-2 text-sm"
+          >
+            Track this order in My account
+          </button>
+        ) : (
+          <button
+            onClick={() => setAuthOpen(true)}
+            className="block mx-auto mb-3 text-accent2 font-semibold underline underline-offset-2 text-sm"
+          >
+            Create an account to track your orders
+          </button>
+        )}
         <button
           onClick={() => router.push("/")}
           className="bg-accent hover:bg-accent/90 text-white font-bold px-6 py-3 rounded-full transition"
@@ -107,6 +135,22 @@ export default function CheckoutPage() {
 
       <div className="grid md:grid-cols-[1fr_360px] gap-8">
         <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="text-sm bg-surface2 border border-border rounded-xl px-4 py-3" data-testid="account-banner">
+            {user ? (
+              <span className="text-muted">
+                Signed in as <strong className="text-ink">{user.full_name}</strong>. This order will appear in your account.
+              </span>
+            ) : (
+              <span className="text-muted">
+                Have an account?{" "}
+                <button type="button" onClick={() => setAuthOpen(true)} className="text-accent2 font-semibold underline underline-offset-2">
+                  Sign in
+                </button>{" "}
+                to track your orders. Or just check out as a guest below.
+              </span>
+            )}
+          </div>
+
           <div className="bg-surface border border-border rounded-xl p-5 grid sm:grid-cols-2 gap-4">
             <Field label="Full Name" value={form.fullName} onChange={update("fullName")} placeholder="Enter your name" required />
             <Field label="Mobile Number" value={form.mobileNumber} onChange={update("mobileNumber")} placeholder="+92 3XX-XXXXXXX" required />

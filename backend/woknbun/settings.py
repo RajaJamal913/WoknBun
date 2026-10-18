@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "orders",
     "accounts",
     "pos",
+    "inventory"
 ]
 
 MIDDLEWARE = [
@@ -160,8 +161,8 @@ REST_FRAMEWORK = {
 }
 
 # ---- Business rules (the server is the source of truth for these) ----------
-TAX_RATE = Decimal("0.16")
-DELIVERY_CHARGES = Decimal("250.00")
+TAX_RATE = Decimal("0.00")
+DELIVERY_CHARGES = Decimal("200.00")
 POS_REFUND_ROLES = ("manager", "admin")  # who may refund a settled order
 
 # Fast password hashing so the test suite doesn't spend its time in PBKDF2.

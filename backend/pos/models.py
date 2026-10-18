@@ -75,6 +75,7 @@ class Order(models.Model):
 
     # Set when this sale was created by accepting a website order. PROTECT: a
     # website order that has a sale on the books can't be deleted underneath it.
+    customer = models.ForeignKey("accounts.Customer", null=True, blank=True, on_delete=models.SET_NULL, related_name="pos_orders")
     online_order = models.OneToOneField("orders.Order", null=True, blank=True, on_delete=models.PROTECT, related_name="pos_order")
 
     created_at = models.DateTimeField(auto_now_add=True)

@@ -20,6 +20,7 @@ from django.db import transaction
 from django.http import Http404
 from django.utils import timezone
 
+from inventory import consumption
 from orders.models import Order as OnlineOrder
 from .models import Order as PosOrder, OrderItem as PosOrderItem, Settlement, Shift
 
@@ -51,7 +52,7 @@ def _create_sale(order, shift):
     """Mirror the website order as a POS sale. Totals are copied, never recomputed:
     the customer saw and agreed to exactly these numbers."""
     sale = PosOrder.objects.create(
-        client_order_id=uuid.uuid4(), shift=shift, order_type="online", online_order=order,
+        client_order_id=uuid.uuid4(), shift=shift, order_type="online", online_order=order, customer=order.customer,
         subtotal=order.subtotal, discount_amount=0, tax_amount=order.tax_amount,
         delivery_charges=order.delivery_charges, grand_total=order.grand_total,
     )
@@ -79,11 +80,15 @@ def apply_action(order_id, action, user, reason=""):
             raise OnlineOrderError(f"Order #{order.id} is {LABELS[order.status]}, so it can't be {phrase} now.")
 
         sale = PosOrder.objects.select_for_update().filter(online_order=order).first()
+        if sale is not None and sale.customer_id is None and order.customer_id:
+            sale.customer_id = order.customer_id          # a sale made by older code: heal it on the way past
+            sale.save(update_fields=["customer"])
 
         if action == "accept":
             shift = _open_shift(user, "Open a shift before accepting online orders - the sale is counted in your shift.")
             sale = _create_sale(order, shift)
             order.accepted_by = user
+            consumption.safely(consumption.deduct_for_sale, sale, user)     # the kitchen starts cooking now
 
         elif action == "deliver":
             shift = _open_shift(user, "Open a shift before recording a delivery - the cash you collect is counted in your shift.")
@@ -95,11 +100,14 @@ def apply_action(order_id, action, user, reason=""):
             sale.save(update_fields=["shift", "status", "settled_at"])
             Settlement.objects.create(order=sale, cashier=user, payment_method="cash",
                                       amount_tendered=sale.grand_total, change_due=0)
+            consumption.safely(consumption.deduct_for_sale, sale, user)     # no-op if accept already did it
 
         elif action == "cancel":
             if not reason:
                 raise OnlineOrderError("Enter a reason for cancelling this order.")
             order.cancel_reason = reason[:255]
+            if sale is not None:
+                consumption.safely(consumption.reverse_for_sale, sale, user)
             if sale is not None and sale.status == "open":
                 sale.status = "cancelled"
                 sale.cancel_reason = order.cancel_reason

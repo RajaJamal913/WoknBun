@@ -42,11 +42,18 @@ class OrderLineSerializer(serializers.Serializer):
         if bool(price_id) == bool(deal_id):
             raise serializers.ValidationError("Each line needs exactly one of price_id or deal_id.")
 
+        # The website only sells what is on the menu right now. The POS terminal passes
+        # context {"allow_inactive_menu": True}: the cashier already served the customer from
+        # their on-screen menu, which may be stale or was punched while offline, so an item
+        # hidden in the meantime must not make the server reject (and lose) a real sale.
+        only_active = not self.context.get("allow_inactive_menu", False)
+
         if price_id:
+            lookup = {"pk": price_id}
+            if only_active:
+                lookup["menu_item__is_active"] = True
             try:
-                price = MenuItemPrice.objects.select_related("menu_item").get(
-                    pk=price_id, menu_item__is_active=True
-                )
+                price = MenuItemPrice.objects.select_related("menu_item").get(**lookup)
             except MenuItemPrice.DoesNotExist:
                 raise serializers.ValidationError({"price_id": "This item is not available."})
             attrs["_line"] = {
@@ -58,8 +65,11 @@ class OrderLineSerializer(serializers.Serializer):
                 "deal": None,
             }
         else:
+            lookup = {"pk": deal_id}
+            if only_active:
+                lookup["is_active"] = True
             try:
-                deal = Deal.objects.get(pk=deal_id, is_active=True)
+                deal = Deal.objects.get(**lookup)
             except Deal.DoesNotExist:
                 raise serializers.ValidationError({"deal_id": "This deal is not available."})
             attrs["_line"] = {

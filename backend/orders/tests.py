@@ -14,7 +14,7 @@ class OnlineOrderTests(APITestCase):
 
     def payload(self, items):
         return {
-            "full_name": "Ali", "mobile_number": "0300", "address_line": "House 1",
+            "full_name": "Ali", "mobile_number": "03001234567", "address_line": "House 1",
             "payment_method": "cod", "items": items,
         }
 

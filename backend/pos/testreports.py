@@ -74,9 +74,9 @@ class ReportTests(POSBase):
     def test_me_reports_role_and_capabilities(self):
         caps = lambda u: {k: v for k, v in self.get("me/", user=u).data.items() if k.startswith("can_")}
         self.assertEqual(self.get("me/", user=self.alice).data["role"], "cashier")
-        self.assertEqual(caps(self.alice), {"can_view_dashboard": True, "can_view_reports": False, "can_take_orders": True})
-        self.assertEqual(caps(self.kitchen), {"can_view_dashboard": True, "can_view_reports": False, "can_take_orders": False})
-        self.assertEqual(caps(self.mgr), {"can_view_dashboard": True, "can_view_reports": True, "can_take_orders": True})
+        self.assertEqual(caps(self.alice), {"can_view_dashboard": True, "can_view_reports": False, "can_take_orders": True, "can_discount": False, "can_manage_inventory": False})
+        self.assertEqual(caps(self.kitchen), {"can_view_dashboard": True, "can_view_reports": False, "can_take_orders": False, "can_discount": False, "can_manage_inventory": False})
+        self.assertEqual(caps(self.mgr), {"can_view_dashboard": True, "can_view_reports": True, "can_take_orders": True, "can_discount": True, "can_manage_inventory": True})
         self.assertEqual(self.get("me/", user=self.nobody).status_code, 403)
 
     # ---- sales summary ----

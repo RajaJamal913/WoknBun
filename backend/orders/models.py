@@ -36,6 +36,11 @@ class Order(models.Model):
     cancel_reason = models.CharField(max_length=255, blank=True)
     accepted_by = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL, related_name="+")
 
+    # Matched (or created) from the phone number when the order is placed.
+    customer = models.ForeignKey("accounts.Customer", null=True, blank=True, on_delete=models.SET_NULL, related_name="web_orders")
+    # True only when the customer was signed in at checkout. "My orders" shows just these.
+    placed_by_account = models.BooleanField(default=False)
+
     class Meta:
         ordering = ["-created_at"]
 

@@ -126,6 +126,79 @@ class OrderPunchTests(POSBase):
         self.assertEqual(len(client_for(self.mgr).get("/api/pos/orders/").data), 2)
 
 
+class CustomerLinkTests(POSBase):
+    def test_customer_attached_at_the_till_is_saved_and_returned(self):
+        from accounts.models import Customer
+        cust = Customer.objects.create(full_name="Sara Khan", phone="+923001234567")
+        res, _ = self.punch(customer=cust.id)
+        self.assertEqual(res.status_code, 201, res.content)
+        self.assertEqual(res.data["customer"], cust.id)
+        self.assertEqual(res.data["customer_info"], {"id": cust.id, "full_name": "Sara Khan"})
+        self.assertEqual(Order.objects.get().customer_id, cust.id)
+
+    def test_order_without_customer_still_works_and_unknown_customer_is_rejected(self):
+        res, _ = self.punch()
+        self.assertEqual(res.status_code, 201)
+        self.assertIsNone(res.data["customer"])
+        self.assertIsNone(res.data["customer_info"])
+        res, _ = self.punch(customer=999999)
+        self.assertEqual(res.status_code, 400)
+
+    def test_customer_stats_count_the_counter_sale_once_settled(self):
+        from accounts.models import Customer
+        cust = Customer.objects.create(full_name="Sara Khan", phone="+923001234567")
+        res, _ = self.punch(customer=cust.id)
+        client_for(self.alice).post(f"/api/pos/orders/{res.data['id']}/settle/",
+                                    {"payment_method": "card"}, format="json")
+        body = client_for(self.alice).get(f"/api/pos/customers/{cust.id}/").data
+        self.assertEqual(body["stats"]["orders_count"], 1)
+
+
+class StaleMenuTests(POSBase):
+    """The terminal sells from a cached menu; a sale of an item hidden since must still be recorded."""
+
+    def test_pos_accepts_an_item_deactivated_after_the_terminal_cached_the_menu(self):
+        self.m["pizza"].is_active = False
+        self.m["pizza"].save()
+        res, _ = self.punch(items=[{"price_id": self.m["large"].id, "quantity": 1}])
+        self.assertEqual(res.status_code, 201, res.content)
+        self.assertEqual(Decimal(res.data["subtotal"]), Decimal("1999.00"))
+
+    def test_pos_accepts_a_deal_deactivated_since(self):
+        self.m["deal"].is_active = False
+        self.m["deal"].save()
+        res, _ = self.punch(items=[{"deal_id": self.m["deal"].id, "quantity": 1}])
+        self.assertEqual(res.status_code, 201, res.content)
+
+    def test_website_still_refuses_inactive_items(self):
+        res = APIClient().post("/api/orders/", {
+            "full_name": "Ali", "mobile_number": "03001234567", "address_line": "House 1", "payment_method": "cod",
+            "items": [{"price_id": self.m["hidden"].id, "quantity": 1}]}, format="json")
+        self.assertEqual(res.status_code, 400)
+
+    def test_a_price_that_no_longer_exists_is_still_rejected(self):
+        res, _ = self.punch(items=[{"price_id": 987654, "quantity": 1}])
+        self.assertEqual(res.status_code, 400)
+
+
+class OnlineOrderCustomerTagTests(POSBase):
+    def test_online_list_reports_customer_and_previous_orders(self):
+        from accounts.models import Customer
+        from orders.models import Order as WebOrder
+        cust = Customer.objects.create(full_name="Sara", phone="+923001234567")
+        w = WebOrder.objects.create(full_name="Sara", mobile_number="03001234567", address_line="H1", customer=cust,
+                                    subtotal=100, tax_amount=16, grand_total=366)
+        row = client_for(self.alice).get("/api/pos/online-orders/?group=new").data[0]
+        self.assertEqual((row["id"], row["customer_id"], row["customer_orders"]), (w.id, cust.id, 0))
+
+        client_for(self.alice).post(f"/api/pos/online-orders/{w.id}/accept/", {}, format="json")
+        client_for(self.alice).post(f"/api/pos/online-orders/{w.id}/deliver/", {}, format="json")
+        w2 = WebOrder.objects.create(full_name="Sara", mobile_number="03001234567", address_line="H1", customer=cust,
+                                     subtotal=100, tax_amount=16, grand_total=366)
+        row = [r for r in client_for(self.alice).get("/api/pos/online-orders/?group=new").data if r["id"] == w2.id][0]
+        self.assertEqual(row["customer_orders"], 1)
+
+
 class SettleRefundCancelTests(POSBase):
     def make_order(self):
         res, _ = self.punch()

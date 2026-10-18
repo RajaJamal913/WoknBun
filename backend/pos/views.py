@@ -6,6 +6,7 @@ from rest_framework.exceptions import PermissionDenied
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from inventory import consumption
 from menu.pricing import money
 from .models import Shift, Order, Settlement, Refund
 from .permissions import (
@@ -89,8 +90,13 @@ class OrderListCreateView(generics.ListCreateAPIView):
         # Anyone on staff can read; only roles that take money can punch orders.
         return [IsPOSStaff()] if self.request.method == "GET" else [IsCashierOrAbove()]
 
+    def get_serializer_context(self):
+        # The cashier already served what was on the terminal's menu (possibly stale or punched
+        # offline); an item hidden since then must not make the server reject a real sale.
+        return {**super().get_serializer_context(), "allow_inactive_menu": True}
+
     def get_queryset(self):
-        qs = Order.objects.all().select_related("shift", "online_order").prefetch_related("items")
+        qs = Order.objects.all().select_related("shift", "online_order", "customer").prefetch_related("items")
         # Cashiers see only their own shifts' orders; managers/admin/kitchen see all.
         if staff_role(self.request.user) == "cashier":
             qs = qs.filter(shift__cashier=self.request.user)
@@ -134,6 +140,7 @@ class SettleOrderView(APIView):
             order.status = "settled"
             order.settled_at = timezone.now()
             order.save(update_fields=["status", "settled_at"])
+            consumption.safely(consumption.deduct_for_sale, order, request.user)
 
         return Response(
             {"order": OrderSerializer(order).data, "settlement": SettlementSerializer(settlement).data},
@@ -159,6 +166,7 @@ class RefundOrderView(APIView):
             )
             order.status = "refunded"
             order.save(update_fields=["status"])
+            consumption.safely(consumption.reverse_for_sale, order, request.user)
 
         return Response(
             {"order": OrderSerializer(order).data, "refund": RefundSerializer(refund).data},

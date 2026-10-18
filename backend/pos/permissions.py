@@ -61,6 +61,7 @@ can_view_dashboard = _role_in("POS_DASHBOARD_ROLES", POS_ROLES)
 can_view_reports = _role_in("POS_REPORT_ROLES", MANAGER_ROLES)
 can_take_orders = lambda user: staff_role(user) in CASHIER_ROLES
 can_discount = lambda user: is_manager(user)  # the order API enforces this too
+can_manage_inventory = lambda user: is_manager(user)  # the inventory API enforces this too
 
 
 class CanViewDashboard(permissions.BasePermission):

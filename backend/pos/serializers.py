@@ -3,6 +3,7 @@ from decimal import Decimal
 from django.db import IntegrityError, transaction
 from rest_framework import serializers
 
+from accounts.models import Customer
 from menu.pricing import OrderLineSerializer, build_lines, calc_tax, money
 from .models import Shift, Order, OrderItem, Settlement, Refund
 from .permissions import is_manager, owns_shift
@@ -34,6 +35,9 @@ class OrderSerializer(serializers.ModelSerializer):
     # not a validation error - create() returns the existing order for it.
     client_order_id = serializers.UUIDField(validators=[])
     online = serializers.SerializerMethodField()
+    # Optional: the customer the cashier attached at the till (the terminal sends their id).
+    customer = serializers.PrimaryKeyRelatedField(queryset=Customer.objects.all(), required=False, allow_null=True)
+    customer_info = serializers.SerializerMethodField()
     discount_amount = serializers.DecimalField(
         max_digits=10, decimal_places=2, min_value=Decimal("0"), required=False, default=Decimal("0")
     )
@@ -43,7 +47,7 @@ class OrderSerializer(serializers.ModelSerializer):
         fields = [
             "id", "client_order_id", "shift", "order_type", "table_label", "status", "cancel_reason", "cancelled_at",
             "subtotal", "discount_amount", "tax_amount", "delivery_charges", "grand_total",
-            "online", "created_at", "settled_at", "items",
+            "customer", "customer_info", "online", "created_at", "settled_at", "items",
         ]
         # Totals are computed by the server - never accepted from a client.
         read_only_fields = [
@@ -55,6 +59,11 @@ class OrderSerializer(serializers.ModelSerializer):
         if not value:
             raise serializers.ValidationError("An order needs at least one item.")
         return value
+
+    def get_customer_info(self, obj):
+        """Just enough for receipts and history; the full profile lives on the Customers screen."""
+        c = obj.customer
+        return {"id": c.id, "full_name": c.full_name} if c else None
 
     def get_online(self, obj):
         """Customer details when this sale came from the website (else None)."""

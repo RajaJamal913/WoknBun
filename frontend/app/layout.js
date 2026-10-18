@@ -9,6 +9,7 @@ import MobileCartBar from "@/components/MobileCartBar";
 import LocationModal from "@/components/LocationModal";
 import SearchModal from "@/components/SearchModal";
 import AuthModal from "@/components/AuthModal";
+import AccountModal from "@/components/AccountModal";
 import WhatsAppButton from "@/components/WhatsAppButton";
 export const metadata = {
   title: "Wok & Bun — Fast Food, Chinese & More | DHA Phase II, Islamabad",
@@ -32,6 +33,7 @@ export default function RootLayout({ children }) {
                 <LocationModal />
                 <SearchModal />
                 <AuthModal />
+                <AccountModal />
               </CartProvider>
             </UserProvider>
           </SearchProvider>

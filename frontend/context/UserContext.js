@@ -1,46 +1,32 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
+import { clearSession, getSession, subscribe } from "@/lib/session";
 
 const UserContext = createContext(null);
-const STORAGE_KEY = "wokandbun_user_v1";
 
 export function UserProvider({ children }) {
-  const [user, setUserState] = useState(null);
-  const [authOpen, setAuthOpen] = useState(false);
+  const [user, setUser] = useState(null); // the signed-in customer's profile, or null
   const [hydrated, setHydrated] = useState(false);
+  const [authOpen, setAuthOpen] = useState(false); // sign in / register
+  const [accountOpen, setAccountOpen] = useState(false); // my orders / profile
 
   useEffect(() => {
-    try {
-      const raw = window.localStorage.getItem(STORAGE_KEY);
-      if (raw) setUserState(JSON.parse(raw));
-    } catch (e) {
-      // ignore corrupt storage
-    }
+    setUser(getSession()?.customer || null);
     setHydrated(true);
+    // Stays in step with session.js (sign in, sign out, a session that expired, another tab...).
+    return subscribe((session) => {
+      setUser(session?.customer || null);
+      if (!session) setAccountOpen(false);
+    });
   }, []);
 
-  function setUser(customer) {
-    setUserState(customer);
-    try {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(customer));
-    } catch (e) {
-      // ignore storage errors
-    }
-    setAuthOpen(false);
-  }
-
   function logout() {
-    setUserState(null);
-    try {
-      window.localStorage.removeItem(STORAGE_KEY);
-    } catch (e) {
-      // ignore
-    }
+    clearSession();
+    setAccountOpen(false);
   }
 
-  const value = { user, setUser, logout, authOpen, setAuthOpen, hydrated };
-
+  const value = { user, hydrated, authOpen, setAuthOpen, accountOpen, setAccountOpen, logout };
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 }
 
