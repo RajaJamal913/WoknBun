@@ -566,3 +566,40 @@ class AlertAndDateTests(InvBase):
         mat = self.material("Salt")
         row = next(r for r in self.m.get("/api/inventory/reports/stock-summary/").json()["materials"] if r["id"] == mat["id"])
         self.assertIsNone(row["last_bought"])
+
+
+class AdminCleanupTests(InvBase):
+    def run_action(self, name, qs):
+        from django.contrib import admin
+        from django.contrib.messages.storage.fallback import FallbackStorage
+        from django.test import RequestFactory
+        from .admin import RawMaterialAdmin
+        req = RequestFactory().post("/admin/")
+        req.session = {}
+        req._messages = FallbackStorage(req)
+        getattr(RawMaterialAdmin(RawMaterial, admin.site), name)(req, qs)
+
+    def test_a_mistaken_ingredient_with_only_opening_stock_can_be_deleted(self):
+        mat = self.material("Typo", opening="500")
+        self.run_action("delete_mistakes", RawMaterial.objects.filter(pk=mat["id"]))
+        self.assertFalse(RawMaterial.objects.filter(pk=mat["id"]).exists())
+        self.assertFalse(StockMovement.objects.filter(material_id=mat["id"]).exists())
+
+    def test_an_ingredient_with_a_bill_is_kept(self):
+        mat = self.material("Flour")
+        self.assertEqual(self.buy(self.supplier(), [{"material": mat["id"], "quantity": "2", "unit_price": "100"}]).status_code, 201)
+        self.run_action("delete_mistakes", RawMaterial.objects.filter(pk=mat["id"]))
+        self.assertTrue(RawMaterial.objects.filter(pk=mat["id"]).exists())
+
+    def test_an_ingredient_with_waste_history_is_kept(self):
+        mat = self.material("Rice", opening="1000")
+        self.m.post("/api/inventory/adjustments/", {"material": mat["id"], "kind": "wastage", "direction": "out",
+                    "quantity": "100", "reason": "Expired"}, format="json")
+        self.run_action("delete_mistakes", RawMaterial.objects.filter(pk=mat["id"]))
+        self.assertTrue(RawMaterial.objects.filter(pk=mat["id"]).exists())
+
+    def test_retire_hides_but_keeps_history(self):
+        mat = self.material("Old", opening="100")
+        self.run_action("retire", RawMaterial.objects.filter(pk=mat["id"]))
+        self.assertFalse(RawMaterial.objects.get(pk=mat["id"]).is_active)
+        self.assertTrue(StockMovement.objects.filter(material_id=mat["id"]).exists())

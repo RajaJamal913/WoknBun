@@ -1,16 +1,50 @@
-from django.contrib import admin
+from django.contrib import admin, messages
+from django.db import transaction
 
 from .models import (DealComponent, PurchaseInvoice, PurchaseInvoiceLine, PurchasePayment, RawMaterial, RecipeLine,
-                     StockMovement, Supplier, Warehouse)
+                     StockCountLine, StockMovement, Supplier, Warehouse)
 
 admin.site.register(Warehouse)
 admin.site.register(Supplier)
 
 
+def is_unused(material):
+    """True only for an ingredient created by mistake: its sole history is the opening stock typed in when it was
+    added, and no bill, recipe or count refers to it. Anything with real history must be retired, not erased."""
+    return (not material.movements.exclude(movement_type="opening").exists()
+            and not PurchaseInvoiceLine.objects.filter(material=material).exists()
+            and not RecipeLine.objects.filter(material=material).exists()
+            and not StockCountLine.objects.filter(material=material).exists())
+
+
 @admin.register(RawMaterial)
 class RawMaterialAdmin(admin.ModelAdmin):
     list_display = ("name", "stock_unit", "purchase_unit", "purchase_factor", "reorder_level", "is_active")
+    list_filter = ("is_active",)
     search_fields = ("name",)
+    actions = ["delete_mistakes", "retire"]
+
+    @admin.action(description="Delete ingredients added by mistake (only if never used)")
+    def delete_mistakes(self, request, queryset):
+        deleted, kept = [], []
+        with transaction.atomic():
+            for m in queryset:
+                if is_unused(m):
+                    m.movements.all().delete()      # just its opening-stock row(s)
+                    m.delete()
+                    deleted.append(m.name)
+                else:
+                    kept.append(m.name)
+        if deleted:
+            self.message_user(request, f"Deleted: {', '.join(deleted)}.", messages.SUCCESS)
+        if kept:
+            self.message_user(request, f"Not deleted, because they have stock history, bills or recipes: {', '.join(kept)}. "
+                                       "Use \"Retire\" to hide them instead.", messages.WARNING)
+
+    @admin.action(description="Retire selected ingredients (hide them, keep their history)")
+    def retire(self, request, queryset):
+        n = queryset.update(is_active=False)
+        self.message_user(request, f"Retired {n} ingredient(s). They no longer show in Stock, and their history is kept.", messages.SUCCESS)
 
 
 class LineInline(admin.TabularInline):
