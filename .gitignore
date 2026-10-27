@@ -1,4 +1,4 @@
 .zip
-.pos-terminal
+pos-terminal/
 .frontend/node_modules
 .frontend/.next

@@ -1,3 +1,5 @@
+import os
+
 from django.contrib import admin, messages
 from django.db import transaction
 
@@ -82,7 +84,10 @@ class StockMovementAdmin(admin.ModelAdmin):
         return False
 
     def has_delete_permission(self, request, obj=None):
-        return False
+        # Locked by default: the ledger is the proof of what happened. While you are still clearing out TEST data,
+        # put INVENTORY_ALLOW_LEDGER_DELETE=1 in backend/.env to let a superuser delete rows here. Remove it again
+        # before real trading starts.
+        return os.environ.get("INVENTORY_ALLOW_LEDGER_DELETE") == "1" and request.user.is_superuser
 
 
 admin.site.register(RecipeLine)
