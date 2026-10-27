@@ -139,6 +139,7 @@ class StockMovement(models.Model):
     reference_type = models.CharField(max_length=30, blank=True)
     reference_id = models.PositiveIntegerField(null=True, blank=True)
     note = models.CharField(max_length=255, blank=True)
+    client_ref = models.UUIDField(unique=True, null=True, blank=True, help_text="Set on manual adjustments so a retry is saved once")
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.SET_NULL, related_name="+")
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -179,3 +180,29 @@ class DealComponent(models.Model):
 
     def __str__(self):
         return f"{self.deal_id}: {self.quantity} x price {self.price_id}"
+
+
+class StockCount(models.Model):
+    """One counting session. Each item that differs from the system gets a 'count' movement for the difference."""
+    client_ref = models.UUIDField(unique=True, null=True, blank=True)
+    note = models.CharField(max_length=200, blank=True)
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.SET_NULL, related_name="+")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at", "-id"]
+
+    def __str__(self):
+        return f"Count #{self.pk}"
+
+
+class StockCountLine(models.Model):
+    count = models.ForeignKey(StockCount, on_delete=models.CASCADE, related_name="lines")
+    material = models.ForeignKey(RawMaterial, on_delete=models.PROTECT, related_name="+")
+    expected = models.DecimalField(max_digits=14, decimal_places=3, help_text="What the system said, in stock units")
+    counted = models.DecimalField(max_digits=14, decimal_places=3)
+    difference = models.DecimalField(max_digits=14, decimal_places=3, help_text="counted - expected")
+    unit_cost = models.DecimalField(max_digits=14, decimal_places=4, null=True, blank=True, help_text="Per stock unit, last known")
+
+    def __str__(self):
+        return f"{self.count_id}: {self.material} {self.difference:+}"

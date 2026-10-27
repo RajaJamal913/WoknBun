@@ -4,11 +4,13 @@ Days are local business days (settings.TIME_ZONE), like the sales reports.
 """
 from decimal import Decimal
 
+from django.utils import timezone
+
 from django.db.models import Count, DecimalField, ExpressionWrapper, F, OuterRef, Q, Subquery, Sum
 from django.db.models.functions import Coalesce
 
 from pos.reports import day_range
-from .models import PurchaseInvoice, RawMaterial, StockMovement
+from .models import PurchaseInvoice, PurchaseInvoiceLine, RawMaterial, StockMovement
 
 ZERO = Decimal("0")
 MONEY0 = Decimal("0.00")
@@ -29,9 +31,14 @@ def stock_summary():
         material=OuterRef("pk"), movement_type="purchase", reference_type="purchase_invoice",
         reference_id__in=PurchaseInvoice.objects.filter(status="posted").values("id"))
         .order_by("-created_at", "-id").values("unit_cost")[:1])
+    # The day it was last bought: the date on the newest posted bill that includes it, or the day its opening stock was bought.
+    last_bill = (PurchaseInvoiceLine.objects.filter(material=OuterRef("pk"), invoice__status="posted")
+                 .order_by("-invoice__invoice_date", "-invoice_id").values("invoice__invoice_date")[:1])
+    last_opening = (StockMovement.objects.filter(material=OuterRef("pk"), movement_type="opening")
+                    .order_by("-created_at", "-id").values("created_at")[:1])
     rows = RawMaterial.objects.annotate(
         on_hand=Coalesce(Sum("movements__quantity"), ZERO, output_field=DecimalField()),
-        last_cost=Subquery(last_cost)).order_by("name")
+        last_cost=Subquery(last_cost), last_bill_date=Subquery(last_bill), last_opening_at=Subquery(last_opening)).order_by("name")
 
     out, total_value, low = [], ZERO, 0
     for r in rows:
@@ -41,6 +48,7 @@ def stock_summary():
         is_low = r.reorder_level > 0 and r.on_hand <= r.reorder_level
         total_value += value
         low += 1 if is_low else 0
+        days = [d for d in (r.last_bill_date, timezone.localtime(r.last_opening_at).date() if r.last_opening_at else None) if d]
         out.append({
             "id": r.id, "name": r.name, "is_active": r.is_active,
             "stock_unit": r.stock_unit, "on_hand": _q(r.on_hand),
@@ -50,6 +58,7 @@ def stock_summary():
             "reorder_level": _q(r.reorder_level), "low": is_low, "negative": r.on_hand < 0,
             "last_cost": None if r.last_cost is None else str(Decimal(r.last_cost).quantize(Decimal("0.0001"))),
             "value": _m(value),
+            "last_bought": max(days).isoformat() if days else None,
         })
     return {"materials": out, "total_value": _m(total_value), "low_count": low,
             "value_note": "Value uses each material's most recent purchase cost."}

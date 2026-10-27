@@ -13,11 +13,13 @@ def user_name(u):
 class MaterialSerializer(serializers.ModelSerializer):
     stock_on_hand = serializers.DecimalField(max_digits=16, decimal_places=3, read_only=True)
     opening_stock = serializers.DecimalField(max_digits=14, decimal_places=3, min_value=Decimal("0"), write_only=True, required=False)
+    opening_date = serializers.DateField(write_only=True, required=False, allow_null=True)   # when the opening stock was bought
+    last_purchased = serializers.DateTimeField(read_only=True)
 
     class Meta:
         model = RawMaterial
         fields = ["id", "name", "stock_unit", "purchase_unit", "purchase_factor", "reorder_level", "is_active",
-                  "stock_on_hand", "opening_stock"]
+                  "stock_on_hand", "opening_stock", "opening_date", "last_purchased"]
         extra_kwargs = {
             "purchase_factor": {"min_value": Decimal("0.001")},
             "reorder_level": {"min_value": Decimal("0")},
@@ -44,6 +46,11 @@ class MaterialSerializer(serializers.ModelSerializer):
         return v
 
     validate_purchase_unit = validate_stock_unit
+
+    def validate_opening_date(self, v):
+        if v and v > timezone.localdate():
+            raise serializers.ValidationError("The purchase date can't be in the future.")
+        return v
 
     def validate(self, attrs):
         # Stock is stored in the stock unit, so once stock has moved, renaming it (g -> kg) would silently
@@ -144,3 +151,68 @@ def invoice_detail(inv):
                       "by": user_name(p.created_by)} for p in inv.payments.select_related("created_by").order_by("id")],
     })
     return body
+
+
+class AdjustmentSerializer(serializers.Serializer):
+    client_ref = serializers.UUIDField(required=False, allow_null=True)
+    material = serializers.PrimaryKeyRelatedField(queryset=RawMaterial.objects.filter(is_active=True))
+    kind = serializers.ChoiceField(choices=["wastage", "adjustment"])
+    direction = serializers.ChoiceField(choices=["in", "out"])
+    quantity = serializers.DecimalField(max_digits=14, decimal_places=3, min_value=Decimal("0.001"))
+    reason = serializers.CharField(max_length=200)
+
+    def validate_reason(self, v):
+        v = v.strip()
+        if len(v) < 3:
+            raise serializers.ValidationError("Say why - for example: expired, spilled, counting mistake.")
+        return v
+
+    def validate(self, attrs):
+        if attrs["kind"] == "wastage" and attrs["direction"] != "out":
+            raise serializers.ValidationError({"direction": "Wastage always takes stock out."})
+        return attrs
+
+
+class CountLineInput(serializers.Serializer):
+    material = serializers.PrimaryKeyRelatedField(queryset=RawMaterial.objects.filter(is_active=True))
+    counted = serializers.DecimalField(max_digits=14, decimal_places=3, min_value=Decimal("0"))
+
+
+class CountCreateSerializer(serializers.Serializer):
+    client_ref = serializers.UUIDField(required=False, allow_null=True)
+    note = serializers.CharField(max_length=200, required=False, allow_blank=True)
+    lines = CountLineInput(many=True)
+
+    def validate_lines(self, v):
+        if not v:
+            raise serializers.ValidationError("Count at least one item.")
+        if len(v) > 500:
+            raise serializers.ValidationError("A count can have at most 500 items.")
+        return v
+
+
+def _q(v):
+    s = format(Decimal(v).quantize(Decimal("0.001")), "f")
+    return s.rstrip("0").rstrip(".") if "." in s else s
+
+
+def count_detail(c):
+    """What the Count screen shows after posting. Loss and gain are in money, using each item's last known cost."""
+    lines, loss, gain, unknown, differing = [], Decimal("0"), Decimal("0"), 0, 0
+    for l in c.lines.select_related("material").order_by("id"):
+        value = None
+        if l.difference != 0:
+            differing += 1
+            if l.unit_cost is None:
+                unknown += 1
+            else:
+                value = (l.difference * l.unit_cost).quantize(Decimal("0.01"))
+                if value < 0:
+                    loss += -value
+                else:
+                    gain += value
+        lines.append({"material": l.material.name, "stock_unit": l.material.stock_unit, "expected": _q(l.expected),
+                      "counted": _q(l.counted), "difference": _q(l.difference), "value": None if value is None else str(value)})
+    return {"id": c.id, "note": c.note, "created_at": c.created_at.isoformat(), "lines": lines, "differing": differing,
+            "loss_value": str(loss.quantize(Decimal("0.01"))), "gain_value": str(gain.quantize(Decimal("0.01"))),
+            "unknown_cost_lines": unknown}

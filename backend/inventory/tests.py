@@ -434,3 +434,135 @@ class OnlineSaleStockTests(RecipeBase):
         self.assertEqual(self.on_hand(self.chicken), Decimal("10000") - 480)
         self.act(w2, "cancel", reason="customer called")
         self.assertEqual(self.on_hand(self.chicken), Decimal("10000") - 240)
+
+
+class AdjustmentTests(InvBase):
+    def adjust(self, material, **extra):
+        body = {"client_ref": str(uuid.uuid4()), "material": material["id"], "kind": "wastage", "direction": "out",
+                "quantity": "500", "reason": "Expired", **extra}
+        return self.m.post("/api/inventory/adjustments/", body, format="json")
+
+    def on_hand(self, material):
+        return stock_on_hand(RawMaterial.objects.get(pk=material["id"]))
+
+    def test_wastage_takes_stock_out_and_leaves_a_ledger_row(self):
+        mat = self.material(opening="5000")
+        res = self.adjust(mat)
+        self.assertEqual(res.status_code, 201, res.content)
+        self.assertEqual(self.on_hand(mat), Decimal("4500"))
+        mv = StockMovement.objects.get(material_id=mat["id"], movement_type="wastage")
+        self.assertEqual((mv.quantity, mv.note), (Decimal("-500.000"), "Expired"))
+
+    def test_a_retried_adjustment_is_saved_once(self):
+        mat = self.material(opening="5000")
+        ref = str(uuid.uuid4())
+        self.assertEqual(self.adjust(mat, client_ref=ref).status_code, 201)
+        self.assertEqual(self.adjust(mat, client_ref=ref).status_code, 200)
+        self.assertEqual(self.on_hand(mat), Decimal("4500"))
+
+    def test_cannot_take_out_more_than_is_in_stock(self):
+        mat = self.material(opening="100")
+        res = self.adjust(mat, quantity="500")
+        self.assertEqual(res.status_code, 400)
+        self.assertEqual(self.on_hand(mat), Decimal("100"))
+
+    def test_a_correction_can_add_stock_but_wastage_cannot(self):
+        mat = self.material(opening="100")
+        self.assertEqual(self.adjust(mat, kind="adjustment", direction="in", quantity="50", reason="Found extra").status_code, 201)
+        self.assertEqual(self.on_hand(mat), Decimal("150"))
+        self.assertEqual(self.adjust(mat, kind="wastage", direction="in").status_code, 400)
+
+    def test_a_reason_is_required(self):
+        mat = self.material(opening="100")
+        self.assertEqual(self.adjust(mat, reason=" ").status_code, 400)
+
+    def test_cashier_cannot_adjust_stock(self):
+        mat = self.material(opening="100")
+        res = self.c.post("/api/inventory/adjustments/", {"material": mat["id"], "kind": "wastage", "direction": "out",
+                          "quantity": "5", "reason": "Expired"}, format="json")
+        self.assertEqual(res.status_code, 403)
+
+
+class StockCountTests(InvBase):
+    def count(self, lines, **extra):
+        return self.m.post("/api/inventory/stock-counts/", {"client_ref": str(uuid.uuid4()), "lines": lines, **extra}, format="json")
+
+    def test_a_count_sets_stock_to_what_was_counted(self):
+        mat = self.material(opening="5000")
+        res = self.count([{"material": mat["id"], "counted": "4700"}])
+        self.assertEqual(res.status_code, 201, res.content)
+        self.assertEqual(stock_on_hand(RawMaterial.objects.get(pk=mat["id"])), Decimal("4700"))
+        self.assertEqual(res.data["differing"], 1)
+        line = res.data["lines"][0]
+        self.assertEqual((line["expected"], line["counted"], line["difference"]), ("5000", "4700", "-300"))
+
+    def test_only_the_difference_is_written_and_matching_items_write_nothing(self):
+        a, b = self.material("Flour", opening="1000"), self.material("Sugar", opening="1000")
+        self.count([{"material": a["id"], "counted": "1000"}, {"material": b["id"], "counted": "900"}])
+        self.assertFalse(StockMovement.objects.filter(material_id=a["id"], movement_type="count").exists())
+        self.assertEqual(StockMovement.objects.get(material_id=b["id"], movement_type="count").quantity, Decimal("-100.000"))
+
+    def test_a_retried_count_is_posted_once(self):
+        mat = self.material(opening="1000")
+        body = {"client_ref": str(uuid.uuid4()), "lines": [{"material": mat["id"], "counted": "900"}]}
+        self.assertEqual(self.m.post("/api/inventory/stock-counts/", body, format="json").status_code, 201)
+        self.assertEqual(self.m.post("/api/inventory/stock-counts/", body, format="json").status_code, 200)
+        self.assertEqual(stock_on_hand(RawMaterial.objects.get(pk=mat["id"])), Decimal("900"))
+
+    def test_loss_is_valued_at_the_last_purchase_cost(self):
+        mat = self.material("Flour")
+        self.assertEqual(self.buy(self.supplier(), [{"material": mat["id"], "quantity": "2", "unit_price": "100"}]).status_code, 201)
+        res = self.count([{"material": mat["id"], "counted": "1900"}])      # 2 kg bought at Rs 100/kg = Rs 0.10 per g
+        self.assertEqual(res.data["loss_value"], "10.00")
+        self.assertEqual(res.data["gain_value"], "0.00")
+
+    def test_an_item_never_bought_cannot_be_valued_but_is_still_counted(self):
+        mat = self.material("Salt", opening="1000")
+        res = self.count([{"material": mat["id"], "counted": "800"}])
+        self.assertEqual(res.data["unknown_cost_lines"], 1)
+        self.assertIsNone(res.data["lines"][0]["value"])
+
+    def test_the_same_item_twice_is_refused(self):
+        mat = self.material(opening="1000")
+        self.assertEqual(self.count([{"material": mat["id"], "counted": "1"}, {"material": mat["id"], "counted": "2"}]).status_code, 400)
+
+
+class AlertAndDateTests(InvBase):
+    def test_alerts_count_items_at_or_below_their_reorder_level(self):
+        self.material("Flour", opening="500", reorder_level="1000")
+        self.material("Sugar", opening="5000", reorder_level="1000")
+        self.assertEqual(self.m.get("/api/inventory/alerts/").json(), {"low_count": 1})
+        self.assertEqual(self.c.get("/api/inventory/alerts/").status_code, 403)
+
+    def test_opening_stock_can_be_dated_to_the_day_it_was_bought(self):
+        from datetime import timedelta
+        from django.utils import timezone
+        day = timezone.localdate() - timedelta(days=3)
+        mat = self.material("Rice", opening="5000", opening_date=day.isoformat())
+        mv = StockMovement.objects.get(material_id=mat["id"], movement_type="opening")
+        self.assertEqual(timezone.localtime(mv.created_at).date(), day)
+        row = next(r for r in self.m.get("/api/inventory/reports/stock-summary/").json()["materials"] if r["id"] == mat["id"])
+        self.assertEqual(row["last_bought"], day.isoformat())
+
+    def test_opening_date_cannot_be_in_the_future(self):
+        from datetime import timedelta
+        from django.utils import timezone
+        tomorrow = (timezone.localdate() + timedelta(days=1)).isoformat()
+        res = self.m.post("/api/inventory/materials/", {"name": "Oil", "stock_unit": "ml", "purchase_unit": "litre",
+                          "purchase_factor": "1000", "opening_stock": "1000", "opening_date": tomorrow}, format="json")
+        self.assertEqual(res.status_code, 400)
+
+    def test_last_bought_follows_the_bill_date_not_the_day_it_was_typed_in(self):
+        from datetime import timedelta
+        from django.utils import timezone
+        mat = self.material("Flour")
+        day = (timezone.localdate() - timedelta(days=5)).isoformat()
+        res = self.buy(self.supplier(), [{"material": mat["id"], "quantity": "2", "unit_price": "100"}], invoice_date=day)
+        self.assertEqual(res.status_code, 201, res.content)
+        row = next(r for r in self.m.get("/api/inventory/reports/stock-summary/").json()["materials"] if r["id"] == mat["id"])
+        self.assertEqual(row["last_bought"], day)
+
+    def test_never_bought_has_no_last_bought_date(self):
+        mat = self.material("Salt")
+        row = next(r for r in self.m.get("/api/inventory/reports/stock-summary/").json()["materials"] if r["id"] == mat["id"])
+        self.assertIsNone(row["last_bought"])

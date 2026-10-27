@@ -1,7 +1,7 @@
 from datetime import timedelta
 
 from django.db import IntegrityError
-from django.db.models import DecimalField, F, Q, Sum
+from django.db.models import DateTimeField, DecimalField, F, Max, Q, Sum
 from django.db.models.functions import Coalesce
 from django.http import Http404
 from rest_framework import generics, status
@@ -12,15 +12,19 @@ from pos.permissions import IsManager
 from pos.report_views import _date_param, _range
 from menu.models import Deal, MenuItemPrice
 from . import recipes, reports, services
-from .models import PurchaseInvoice, RawMaterial, Supplier
-from .serializers import (MaterialSerializer, PaymentSerializer, PurchaseCreateSerializer, SupplierSerializer,
-                          VoidSerializer, invoice_detail, invoice_row)
+from .models import PurchaseInvoice, RawMaterial, StockCount, Supplier
+from .serializers import (AdjustmentSerializer, CountCreateSerializer, MaterialSerializer, PaymentSerializer,
+                          PurchaseCreateSerializer, SupplierSerializer, VoidSerializer, count_detail, invoice_detail,
+                          invoice_row)
 
 ZERO = 0
 
 
 def _materials():
-    return RawMaterial.objects.annotate(stock_on_hand=Coalesce(Sum("movements__quantity"), ZERO, output_field=DecimalField()))
+    return RawMaterial.objects.annotate(
+        stock_on_hand=Coalesce(Sum("movements__quantity"), ZERO, output_field=DecimalField()),
+        last_purchased=Max("movements__created_at", filter=Q(movements__movement_type__in=["opening", "purchase"]),
+                           output_field=DateTimeField()))
 
 
 def _suppliers():
@@ -44,7 +48,8 @@ class MaterialListCreateView(generics.ListCreateAPIView):
         ser = self.get_serializer(data=request.data)
         ser.is_valid(raise_exception=True)
         opening = ser.validated_data.pop("opening_stock", None)
-        material = services.create_material_with_opening(ser, request.user, opening)
+        opening_date = ser.validated_data.pop("opening_date", None)
+        material = services.create_material_with_opening(ser, request.user, opening, opening_date)
         return Response(MaterialSerializer(_materials().get(pk=material.pk)).data, status=status.HTTP_201_CREATED)
 
 
@@ -59,6 +64,7 @@ class MaterialDetailView(generics.RetrieveUpdateAPIView):
         ser = self.get_serializer(self.get_object(), data=request.data, partial=True)
         ser.is_valid(raise_exception=True)
         ser.validated_data.pop("opening_stock", None)    # opening stock is entered once, when the material is created
+        ser.validated_data.pop("opening_date", None)
         ser.save()
         return Response(MaterialSerializer(_materials().get(pk=ser.instance.pk)).data)
 
@@ -221,3 +227,39 @@ class DealContentsView(APIView):
         ser.is_valid(raise_exception=True)
         recipes.set_deal_contents(deal, ser.validated_data["components"])
         return Response(recipes.overview())
+
+
+class AdjustmentView(APIView):
+    """Waste, or a correction. POST only: nothing here edits an old row, it adds a new one."""
+    permission_classes = [IsManager]
+
+    def post(self, request):
+        ser = AdjustmentSerializer(data=request.data)
+        ser.is_valid(raise_exception=True)
+        try:
+            mv, created = services.post_adjustment(request.user, ser.validated_data)
+        except IntegrityError:    # the same client_ref arrived twice at once; the other one won
+            mv, created = services.StockMovement.objects.get(client_ref=ser.validated_data["client_ref"]), False
+        return Response({"id": mv.id, "material": mv.material_id, "quantity": str(mv.quantity), "type": mv.movement_type},
+                        status=status.HTTP_201_CREATED if created else status.HTTP_200_OK)
+
+
+class StockCountView(APIView):
+    permission_classes = [IsManager]
+
+    def post(self, request):
+        ser = CountCreateSerializer(data=request.data)
+        ser.is_valid(raise_exception=True)
+        try:
+            count, created = services.post_count(request.user, ser.validated_data)
+        except IntegrityError:
+            count, created = StockCount.objects.get(client_ref=ser.validated_data["client_ref"]), False
+        return Response(count_detail(count), status=status.HTTP_201_CREATED if created else status.HTTP_200_OK)
+
+
+class AlertsView(APIView):
+    """Feeds the low-stock badge on the Inventory card."""
+    permission_classes = [IsManager]
+
+    def get(self, request):
+        return Response({"low_count": reports.stock_summary()["low_count"]})
