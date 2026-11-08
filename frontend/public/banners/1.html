@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bite Into Happiness - Animated Banner</title>
+<style>
+  html,body{margin:0;height:100%;overflow:hidden;background:#0b0a09}
+  body{padding:0}
+  .banner{position:relative;width:100%;height:100%;
+    overflow:hidden;border-radius:0;background:#0d0c0b url("assets/1-bg.jpg") center/100% 100% no-repeat;cursor:pointer}
+  .l{position:absolute;opacity:0;pointer-events:none;user-select:none;will-change:transform,opacity}
+  /* steam above the burger, only once it is assembled */
+  .puff{position:absolute;width:7%;aspect-ratio:1;border-radius:50%;opacity:0;pointer-events:none;
+    background:radial-gradient(circle,rgba(255,255,255,.22),rgba(255,255,255,0) 68%);filter:blur(6px)}
+  .banner.done .puff{animation:steam 4.2s ease-out infinite}
+  .puff:nth-of-type(2){animation-delay:1.4s!important} .puff:nth-of-type(3){animation-delay:2.8s!important}
+  @keyframes steam{0%{opacity:0;transform:translateY(0) scale(.6)}25%{opacity:.9}100%{opacity:0;transform:translateY(-120%) scale(1.5)}}
+  @media (prefers-reduced-motion:reduce){.l{opacity:1!important}}
+</style></head>
+<body>
+<div class="banner" id="banner" title="Click to replay">
+  <img class="l" data-n="paper" alt="" src="assets/1-paper.png" style="left:60.9857%;top:71.6851%;width:36.7112%;height:18.5083%">
+<img class="l" data-n="bun_bottom" alt="" src="assets/1-bun_bottom.png" style="left:64.4404%;top:66.9890%;width:17.1810%;height:9.9448%">
+<img class="l" data-n="patty" alt="" src="assets/1-patty.png" style="left:65.4076%;top:56.9061%;width:16.6743%;height:10.0829%">
+<img class="l" data-n="tomato" alt="" src="assets/1-tomato.png" style="left:64.9931%;top:52.9006%;width:17.3653%;height:4.0055%">
+<img class="l" data-n="lettuce" alt="" src="assets/1-lettuce.png" style="left:64.9470%;top:45.8564%;width:17.4113%;height:7.0442%">
+<img class="l" data-n="bun_top" alt="" src="assets/1-bun_top.png" style="left:66.2368%;top:33.2873%;width:14.5555%;height:12.5691%">
+<img class="l" data-n="fries" alt="" src="assets/1-fries.png" style="left:75.6794%;top:56.7680%;width:18.7471%;height:27.4862%">
+<img class="l" data-n="txt_bite" alt="" src="assets/1-txt_bite.png" style="left:7.5541%;top:17.4033%;width:24.4588%;height:24.3094%">
+<img class="l" data-n="txt_happy" alt="" src="assets/1-txt_happy.png" style="left:8.0608%;top:35.4972%;width:28.0516%;height:28.4530%">
+<img class="l" data-n="txt_deco" alt="" src="assets/1-txt_deco.png" style="left:7.3699%;top:5.9392%;width:26.5316%;height:13.8122%">
+<img class="l" data-n="txt_tag" alt="" src="assets/1-txt_tag.png" style="left:6.6789%;top:61.6022%;width:28.5583%;height:26.6575%">
+  <i class="puff" style="left:70.5%;top:12%"></i><i class="puff" style="left:73.5%;top:14%"></i><i class="puff" style="left:76%;top:12%"></i>
+</div>
+<script>
+(function(){
+  var banner=document.getElementById('banner');
+  var L={}; banner.querySelectorAll('.l').forEach(function(e){L[e.dataset.n]=e;});
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var sleep=function(ms){return new Promise(function(r){setTimeout(r,ms)})};
+  var run=0;
+
+  function anim(el,kf,opt){ opt.fill='forwards'; return el.animate(kf,opt); }
+
+  // a piece falls from above, lands with a squash and a little bounce
+  function drop(el,delay,dist,tilt){
+    return anim(el,[
+      {opacity:0,transform:'translateY('+(-dist)+'px) rotate('+tilt+'deg)',offset:0},
+      {opacity:1,transform:'translateY(0) rotate(0deg) scale(1,1)',offset:.55,easing:'ease-out'},
+      {opacity:1,transform:'translateY(0) scale(1.03,.9)',offset:.66,easing:'ease-out'},
+      {opacity:1,transform:'translateY(-'+(dist*.04)+'px) scale(1,1.02)',offset:.8,easing:'ease-in'},
+      {opacity:1,transform:'translateY(0) scale(1,1)',offset:1}
+    ],{duration:900,delay:delay,easing:'cubic-bezier(.55,0,1,.45)'});
+  }
+  function rise(el,delay,dx,dy){
+    return anim(el,[
+      {opacity:0,transform:'translate('+dx+'px,'+dy+'px)',filter:'blur(6px)'},
+      {opacity:1,transform:'translate(0,0)',filter:'blur(0)'}
+    ],{duration:800,delay:delay,easing:'cubic-bezier(.2,.8,.2,1)'});
+  }
+
+  async function play(){
+    var id=++run;
+    banner.classList.remove('done');
+    Object.values(L).forEach(function(e){e.getAnimations().forEach(function(a){a.cancel()}); e.style.opacity=0;});
+    var H=banner.clientHeight, A=[];
+
+    // headline + tagline
+    A.push(rise(L.txt_bite ,  200, 0, 50));
+    A.push(rise(L.txt_happy,  550, 0, 50));
+    A.push(anim(L.txt_deco ,[{opacity:0,transform:'scale(.6)'},{opacity:1,transform:'scale(1.08)',offset:.6},{opacity:1,transform:'scale(1)'}],{duration:700,delay:1000,easing:'ease-out'}));
+    A.push(rise(L.txt_tag  , 1100,-80, 0));
+
+    // board with paper slides in, then the burger builds up
+    A.push(anim(L.paper,[{opacity:0,transform:'translateY(24px) scale(.97)'},{opacity:1,transform:'translateY(0) scale(1)'}],{duration:700,delay:300,easing:'cubic-bezier(.2,.8,.2,1)'}));
+    var d=H*0.95, t=900;
+    A.push(drop(L.bun_bottom,t,d,-3)); t+=600;
+    A.push(drop(L.patty,     t,d, 3)); t+=550;
+    A.push(drop(L.tomato,    t,d,-2)); t+=500;
+    A.push(drop(L.lettuce,   t,d, 3)); t+=500;
+    A.push(drop(L.bun_top,   t,d,-2)); t+=700;
+    A.push(drop(L.fries,     t,d, 2));
+
+    await Promise.all(A.map(function(a){return a.finished}));
+    if(id!==run) return;
+    banner.classList.add('done');          // steam starts
+    await sleep(5500);
+    if(id!==run) return;
+    var out=banner.animate([{opacity:1},{opacity:0}],{duration:500,fill:'forwards'});
+    await out.finished; out.cancel();
+    if(id!==run) return;
+    play();
+  }
+
+  banner.addEventListener('click',play);
+  if(reduce) return;
+  var started=false;
+  new IntersectionObserver(function(e){ if(e[0].isIntersecting&&!started){started=true;play();} },{threshold:.3}).observe(banner);
+})();
+</script></body></html>

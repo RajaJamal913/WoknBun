@@ -1,35 +1,57 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
-import { asset } from "@/lib/assets";
+import { useEffect, useReducer, useState, useRef, useCallback } from "react";
 
+// Each slide is an animated banner (public/banners/N.html + public/banners/assets/N-*.{jpg,png,webp}).
+// The banner is rendered in an iframe that is re-mounted every time its slide becomes active,
+// so the animation always starts from the beginning when the slide appears.
 const SLIDES = [
-  { id: "1", cta: "Order Now", href: "#beef-burgers", image: asset("/images/1.png") },
-  { id: "2", cta: "Order Now", href: "#appetizers", image: asset("/images/2.png") },
-  { id: "3", cta: "Order Now", href: "#pizza", image: asset("/images/3.png") },
-  { id: "4", cta: "Order Now", href: "#main-course", image: asset("/images/4.png") },
-  { id: "5", cta: "Order Now", href: "#popular", image: asset("/images/5.png") },
+  { id: "1", cta: "Order Now", href: "#beef-burgers", banner: "/banners/1.html" },
+  { id: "2", cta: "Order Now", href: "#appetizers", banner: "/banners/2.html" },
+  { id: "3", cta: "Order Now", href: "#pizza", banner: "/banners/3.html" },
+  { id: "4", cta: "Order Now", href: "#main-course", banner: "/banners/4.html" },
+  { id: "5", cta: "Order Now", href: "#popular", banner: "/banners/5.html" },
 ];
 
-const AUTOPLAY_MS = 6000;
+// Banners need ~5s to finish their intro animation, so give each slide a bit longer than before.
+const AUTOPLAY_MS = 9000;
+// The slider keeps the banner artwork's own proportions so the complete image is always visible (no cropping).
+const BANNER_ASPECT = "2172 / 724";
+
+function reducer(state, action) {
+  if (action.type === "clear") return { ...state, leaving: null };
+  const n = (action.to + SLIDES.length) % SLIDES.length;
+  if (n === state.index) return state;
+  const runs = state.runs.slice();
+  runs[n] += 1; // new key => the iframe is re-mounted => animation restarts
+  return { index: n, leaving: state.index, runs };
+}
 
 export default function HeroSlider() {
-  const [index, setIndex] = useState(0);
+  const [{ index, leaving, runs }, dispatch] = useReducer(reducer, {
+    index: 0,
+    leaving: null,
+    runs: SLIDES.map((_, i) => (i === 0 ? 1 : 0)),
+  });
   const [paused, setPaused] = useState(false);
   const touchStartX = useRef(null);
 
-  const goTo = useCallback((slideIndex) => {
-    setIndex((slideIndex + SLIDES.length) % SLIDES.length);
-  }, []);
-
-  const next = useCallback(() => setIndex((i) => (i + 1) % SLIDES.length), []);
-  const prev = useCallback(() => setIndex((i) => (i - 1 + SLIDES.length) % SLIDES.length), []);
+  const goTo = useCallback((i) => dispatch({ type: "go", to: i }), []);
+  const next = useCallback(() => dispatch({ type: "go", to: index + 1 }), [index]);
+  const prev = useCallback(() => dispatch({ type: "go", to: index - 1 }), [index]);
 
   useEffect(() => {
     if (paused) return;
-    const t = setInterval(() => setIndex((i) => (i + 1) % SLIDES.length), AUTOPLAY_MS);
+    const t = setInterval(() => dispatch({ type: "go", to: index + 1 }), AUTOPLAY_MS);
     return () => clearInterval(t);
-  }, [paused]);
+  }, [paused, index]);
+
+  // keep the outgoing slide mounted until the cross-fade has finished
+  useEffect(() => {
+    if (leaving === null) return;
+    const t = setTimeout(() => dispatch({ type: "clear" }), 800);
+    return () => clearTimeout(t);
+  }, [leaving]);
 
   const arrow =
     "absolute top-1/2 -translate-y-1/2 z-10 w-8 h-8 md:w-10 md:h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/20 text-white text-lg flex items-center justify-center hover:bg-accent hover:border-accent transition md:opacity-0 md:group-hover:opacity-100";
@@ -37,7 +59,8 @@ export default function HeroSlider() {
   return (
     <section className="w-full px-4 md:px-6 pt-3">
       <div
-        className="group relative overflow-hidden w-full h-[160px] md:h-[300px] rounded-3xl shadow-card ring-1 ring-white/10 bg-surface"
+        className="group relative overflow-hidden w-full rounded-3xl shadow-card ring-1 ring-white/10 bg-surface"
+        style={{ aspectRatio: BANNER_ASPECT }}
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
         onTouchStart={(e) => (touchStartX.current = e.touches[0].clientX)}
@@ -53,19 +76,24 @@ export default function HeroSlider() {
             key={s.id}
             className="absolute inset-0 transition-opacity duration-700"
             style={{ opacity: i === index ? 1 : 0 }}
+            aria-hidden={i !== index}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={s.image}
-              alt=""
-              loading={i === 0 ? "eager" : "lazy"}
-              className="absolute inset-0 w-full h-full object-cover object-center"
-            />
+            {(i === index || i === leaving) && (
+              <iframe
+                key={`${s.id}-${runs[i]}`}
+                src={s.banner}
+                title=""
+                tabIndex={-1}
+                scrolling="no"
+                sandbox="allow-scripts"
+                className="absolute inset-0 w-full h-full border-0 block pointer-events-none"
+              />
+            )}
           </div>
         ))}
 
         {/* Bottom gradient so CTA + dots stay legible */}
-        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/70 to-transparent pointer-events-none" />
+        <div className="absolute inset-x-0 bottom-0 h-14 bg-gradient-to-t from-black/50 to-transparent pointer-events-none" />
 
         <button aria-label="Previous slide" onClick={prev} className={`${arrow} left-2 md:left-4`}>
           &lsaquo;

@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Start With A Crunch - Animated Banner</title>
+<style>
+  html,body{margin:0;height:100%;overflow:hidden;background:#0b0a09}
+  body{padding:0}
+  .banner{position:relative;width:100%;height:100%;
+    overflow:hidden;border-radius:0;background:#0d0c0b url("assets/3-bg.jpg") center/100% 100% no-repeat;cursor:pointer}
+  .l{position:absolute;opacity:0;pointer-events:none;user-select:none;will-change:transform,opacity}
+  .puff{position:absolute;width:7%;aspect-ratio:1;border-radius:50%;opacity:0;pointer-events:none;
+    background:radial-gradient(circle,rgba(255,255,255,.2),rgba(255,255,255,0) 68%);filter:blur(7px)}
+  .banner.done .puff{animation:steam 4.2s ease-out infinite}
+  .puff:nth-of-type(2){animation-delay:1.4s!important} .puff:nth-of-type(3){animation-delay:2.8s!important}
+  @keyframes steam{0%{opacity:0;transform:translateY(0) scale(.6)}25%{opacity:.9}100%{opacity:0;transform:translateY(-120%) scale(1.5)}}
+  .banner.done [data-n=burst]{animation:tw 1.6s ease-in-out infinite alternate}
+  @keyframes tw{from{opacity:1}to{opacity:.45}}
+  .banner.done [data-n=food]{animation:fl 5s ease-in-out infinite alternate}
+  @keyframes fl{from{transform:translateY(0)}to{transform:translateY(-5px)}}
+  @media (prefers-reduced-motion:reduce){.l{opacity:1!important}}
+</style></head>
+<body>
+<div class="banner" id="banner" title="Click to replay">
+<img class="l" data-n="food" alt="" src="assets/3-food.webp" style="left:63.5359%;top:19.3370%;width:28.5451%;height:66.2983%">
+<img class="l" data-n="brush_tl" alt="" src="assets/3-brush_tl.webp" style="left:0.0000%;top:0.0000%;width:19.7974%;height:25.5525%">
+<img class="l" data-n="brush_br" alt="" src="assets/3-brush_br.webp" style="left:72.7440%;top:74.5856%;width:27.2560%;height:25.4144%">
+<img class="l" data-n="lines_t" alt="" src="assets/3-lines_t.webp" style="left:57.5506%;top:1.3812%;width:42.4494%;height:23.4807%">
+<img class="l" data-n="lines_b" alt="" src="assets/3-lines_b.webp" style="left:0.0000%;top:88.3978%;width:50.4144%;height:11.6022%">
+<img class="l" data-n="start" alt="" src="assets/3-start.webp" style="left:9.2081%;top:20.0276%;width:27.3941%;height:15.6077%">
+<img class="l" data-n="burst" alt="" src="assets/3-burst.webp" style="left:36.6022%;top:20.0276%;width:5.2947%;height:13.1215%">
+<img class="l" data-n="crunch" alt="" src="assets/3-crunch.webp" style="left:9.2081%;top:34.5304%;width:33.3794%;height:31.7680%">
+<img class="l" data-n="swoosh" alt="" src="assets/3-swoosh.webp" style="left:9.2081%;top:64.6409%;width:33.3794%;height:6.4917%">
+<img class="l" data-n="tag" alt="" src="assets/3-tag.webp" style="left:10.1289%;top:71.8232%;width:33.1492%;height:9.6685%">
+  <i class="puff" style="left:72%;top:14%"></i><i class="puff" style="left:76%;top:16%"></i><i class="puff" style="left:80%;top:14%"></i>
+</div>
+<script>
+(function(){
+  var banner=document.getElementById('banner');
+  var L={}; banner.querySelectorAll('.l').forEach(function(e){L[e.dataset.n]=e;});
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var sleep=function(ms){return new Promise(function(r){setTimeout(r,ms)})};
+  var run=0;
+  function anim(el,kf,opt){ opt.fill='forwards'; return el.animate(kf,opt); }
+  // headline word falls in, squashes, bounces
+  function drop(el,delay,dist,tilt){
+    return anim(el,[
+      {opacity:0,transform:'translateY('+(-dist)+'px) rotate('+tilt+'deg)',offset:0},
+      {opacity:1,transform:'translateY(0) rotate(0deg) scale(1,1)',offset:.55,easing:'ease-out'},
+      {opacity:1,transform:'translateY(0) scale(1.03,.9)',offset:.66,easing:'ease-out'},
+      {opacity:1,transform:'translateY(-'+(dist*.04)+'px) scale(1,1.02)',offset:.8,easing:'ease-in'},
+      {opacity:1,transform:'translateY(0) scale(1,1)',offset:1}
+    ],{duration:900,delay:delay,easing:'cubic-bezier(.55,0,1,.45)'});
+  }
+  function rise(el,delay,dx,dy){
+    return anim(el,[
+      {opacity:0,transform:'translate('+dx+'px,'+dy+'px)',filter:'blur(6px)'},
+      {opacity:1,transform:'translate(0,0)',filter:'blur(0)'}
+    ],{duration:800,delay:delay,easing:'cubic-bezier(.2,.8,.2,1)'});
+  }
+  // brush stroke wipes in
+  function wipe(el,delay,fromRight,dur){
+    var a=fromRight?'inset(0 0 0 100%)':'inset(0 100% 0 0)';
+    return anim(el,[{opacity:1,clipPath:a},{opacity:1,clipPath:'inset(0 0 0 0)'}],{duration:dur||700,delay:delay,easing:'cubic-bezier(.3,.7,.2,1)'});
+  }
+  function pop(el,delay){
+    return anim(el,[{opacity:0,transform:'scale(.6)'},{opacity:1,transform:'scale(1.1)',offset:.6},{opacity:1,transform:'scale(1)'}],{duration:700,delay:delay,easing:'ease-out'});
+  }
+  function shake(delay){
+    banner.animate([{transform:'translate(0,0)'},{transform:'translate(-6px,4px)'},{transform:'translate(5px,-4px)'},{transform:'translate(-3px,2px)'},{transform:'translate(0,0)'}],{duration:320,delay:delay});
+  }
+  async function play(){
+    var id=++run;
+    banner.classList.remove('done');
+    Object.values(L).forEach(function(e){e.getAnimations().forEach(function(a){a.cancel()}); e.style.opacity=0;e.style.transform='';e.style.filter='';e.style.clipPath='';});
+    var H=banner.clientHeight, A=[];
+    // corner brushes and gold streaks sweep in
+    A.push(wipe(L.brush_tl,100,false,1000));
+    A.push(wipe(L.brush_br,250,true,1000));
+    A.push(wipe(L.lines_t,500,false,1100));
+    A.push(wipe(L.lines_b,650,false,1100));
+    // platter spins and pops in
+    A.push(anim(L.food,[{opacity:0,transform:'scale(.4) rotate(-30deg)',filter:'blur(8px)'},{opacity:1,transform:'scale(1) rotate(0deg)',filter:'blur(0)'}],{duration:1100,delay:500,easing:'cubic-bezier(.2,1.25,.3,1)'}));
+    // headline
+    A.push(rise(L.start,800,-90,0));
+    A.push(drop(L.crunch,1300,H*.9,-2)); shake(1300+900*.55);
+    A.push(pop(L.burst,2300));
+    A.push(wipe(L.swoosh,2500,false,700));
+    A.push(rise(L.tag,2800,0,30));
+    await Promise.all(A.map(function(a){return a.finished}));
+    if(id!==run) return;
+    A.forEach(function(a){try{a.commitStyles()}catch(x){} a.cancel()});
+    banner.classList.add('done');
+    await sleep(5500);
+    if(id!==run) return;
+    var out=banner.animate([{opacity:1},{opacity:0}],{duration:500,fill:'forwards'});
+    await out.finished; out.cancel();
+    if(id!==run) return;
+    play();
+  }
+  banner.addEventListener('click',play);
+  if(reduce) return;
+  var started=false;
+  new IntersectionObserver(function(e){ if(e[0].isIntersecting&&!started){started=true;play();} },{threshold:.3}).observe(banner);
+})();
+</script></body></html>

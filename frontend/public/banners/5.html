@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flavour In Every Grain - Animated Banner</title>
+<style>
+  html,body{margin:0;height:100%;overflow:hidden;background:#0b0a09}
+  body{padding:0}
+  .banner{position:relative;width:100%;height:100%;
+    overflow:hidden;border-radius:0;background:#0d0c0b url("assets/5-bg.jpg") center/100% 100% no-repeat;cursor:pointer}
+  .l{position:absolute;opacity:0;pointer-events:none;user-select:none;will-change:transform,opacity}
+  .puff{position:absolute;width:7%;aspect-ratio:1;border-radius:50%;opacity:0;pointer-events:none;
+    background:radial-gradient(circle,rgba(255,255,255,.2),rgba(255,255,255,0) 68%);filter:blur(7px)}
+  .banner.done .puff{animation:steam 4.2s ease-out infinite}
+  .puff:nth-of-type(2){animation-delay:1.4s!important} .puff:nth-of-type(3){animation-delay:2.8s!important}
+  @keyframes steam{0%{opacity:0;transform:translateY(0) scale(.6)}25%{opacity:.9}100%{opacity:0;transform:translateY(-120%) scale(1.5)}}
+  .banner.done [data-n=food]{transform-origin:50% 75%;animation:toss 3.2s ease-in-out infinite}
+  @keyframes toss{0%,100%{transform:translateY(0) scale(1,1)}22%{transform:translateY(-9%) rotate(-1.2deg) scale(1.03)}
+    44%{transform:translateY(0) scale(1.03,.96)}56%{transform:translateY(-2%) scale(1,1.01)}68%{transform:translateY(0) scale(1,1)}}
+  .banner.done [data-n=steam]{transform-origin:50% 100%;animation:sd 5s ease-in-out infinite alternate}
+  @keyframes sd{from{transform:translateY(0) scale(1,1);opacity:1}to{transform:translateY(-5%) scale(1.06,1.04);opacity:.65}}
+  .banner.done [data-n=gC]{animation:gf 4s ease-in-out infinite alternate}
+  @keyframes gf{from{transform:translateY(0) rotate(0)}to{transform:translateY(-3%) rotate(2deg)}}
+  .em{position:absolute;width:.55%;aspect-ratio:1;border-radius:50%;opacity:0;pointer-events:none;
+    background:radial-gradient(circle,#ffd27a,#ff7a1a 55%,rgba(255,90,0,0) 72%)}
+  .banner.done .em{animation:ember 3s ease-out infinite}
+  @keyframes ember{0%{opacity:0;transform:translate(0,0) scale(.6)}15%{opacity:1}100%{opacity:0;transform:translate(var(--dx),-1400%) scale(.3)}}
+  @media (prefers-reduced-motion:reduce){.l{opacity:1!important}}
+</style></head>
+<body>
+<div class="banner" id="banner" title="Click to replay">
+<img class="l" data-n="brush" alt="" src="assets/5-brush.webp" style="left:2.7624%;top:17.2652%;width:48.8029%;height:49.0331%">
+<img class="l" data-n="brush3" alt="" src="assets/5-brush3.webp" style="left:38.6740%;top:82.1823%;width:15.1934%;height:17.8177%">
+<img class="l" data-n="brush2" alt="" src="assets/5-brush2.webp" style="left:53.4070%;top:60.0829%;width:19.3370%;height:31.7680%">
+<img class="l" data-n="bowl" alt="" src="assets/5-bowl.webp" style="left:63.7661%;top:38.3978%;width:28.0847%;height:52.0718%">
+<img class="l" data-n="food" alt="" src="assets/5-food.webp" style="left:63.7661%;top:38.3978%;width:28.0847%;height:52.0718%">
+<img class="l" data-n="orn_t" alt="" src="assets/5-orn_t.webp" style="left:9.8987%;top:12.1547%;width:34.0700%;height:6.4917%">
+<img class="l" data-n="orn_b" alt="" src="assets/5-orn_b.webp" style="left:9.8987%;top:64.2265%;width:34.0700%;height:5.1105%">
+<img class="l" data-n="flavour" alt="" src="assets/5-flavour.webp" style="left:9.8987%;top:20.7182%;width:34.0700%;height:25.9669%">
+<img class="l" data-n="grain" alt="" src="assets/5-grain.webp" style="left:9.8987%;top:46.6851%;width:34.0700%;height:16.5746%">
+<img class="l" data-n="tag" alt="" src="assets/5-tag.webp" style="left:9.8987%;top:69.7514%;width:25.3223%;height:19.7514%">
+<img class="l" data-n="gA" alt="" src="assets/5-gA.webp" style="left:52.4862%;top:66.9890%;width:14.2726%;height:30.3867%">
+<img class="l" data-n="gB" alt="" src="assets/5-gB.webp" style="left:86.0958%;top:78.0387%;width:11.0497%;height:21.6851%">
+<img class="l" data-n="gC" alt="" src="assets/5-gC.webp" style="left:90.9300%;top:30.3867%;width:9.0700%;height:20.0276%">
+<img class="l" data-n="steam" alt="" src="assets/5-steam.webp" style="left:69.7514%;top:2.7624%;width:14.0424%;height:37.2928%">
+  <i class="puff" style="left:72%;top:14%"></i><i class="puff" style="left:76%;top:16%"></i><i class="puff" style="left:80%;top:14%"></i>
+</div>
+<script>
+(function(){
+  var banner=document.getElementById('banner');
+  var L={}; banner.querySelectorAll('.l').forEach(function(e){L[e.dataset.n]=e;});
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var sleep=function(ms){return new Promise(function(r){setTimeout(r,ms)})};
+  var run=0;
+  function anim(el,kf,opt){ opt.fill='forwards'; return el.animate(kf,opt); }
+  // headline word falls in, squashes, bounces
+  function drop(el,delay,dist,tilt){
+    return anim(el,[
+      {opacity:0,transform:'translateY('+(-dist)+'px) rotate('+tilt+'deg)',offset:0},
+      {opacity:1,transform:'translateY(0) rotate(0deg) scale(1,1)',offset:.55,easing:'ease-out'},
+      {opacity:1,transform:'translateY(0) scale(1.03,.9)',offset:.66,easing:'ease-out'},
+      {opacity:1,transform:'translateY(-'+(dist*.04)+'px) scale(1,1.02)',offset:.8,easing:'ease-in'},
+      {opacity:1,transform:'translateY(0) scale(1,1)',offset:1}
+    ],{duration:900,delay:delay,easing:'cubic-bezier(.55,0,1,.45)'});
+  }
+  function rise(el,delay,dx,dy){
+    return anim(el,[
+      {opacity:0,transform:'translate('+dx+'px,'+dy+'px)',filter:'blur(6px)'},
+      {opacity:1,transform:'translate(0,0)',filter:'blur(0)'}
+    ],{duration:800,delay:delay,easing:'cubic-bezier(.2,.8,.2,1)'});
+  }
+  // brush stroke wipes in
+  function wipe(el,delay,fromRight,dur){
+    var a=fromRight?'inset(0 0 0 100%)':'inset(0 100% 0 0)';
+    return anim(el,[{opacity:1,clipPath:a},{opacity:1,clipPath:'inset(0 0 0 0)'}],{duration:dur||700,delay:delay,easing:'cubic-bezier(.3,.7,.2,1)'});
+  }
+  function pop(el,delay){
+    return anim(el,[{opacity:0,transform:'scale(.6)'},{opacity:1,transform:'scale(1.1)',offset:.6},{opacity:1,transform:'scale(1)'}],{duration:700,delay:delay,easing:'ease-out'});
+  }
+  function shake(delay){
+    banner.animate([{transform:'translate(0,0)'},{transform:'translate(-5px,3px)'},{transform:'translate(4px,-3px)'},{transform:'translate(-2px,2px)'},{transform:'translate(0,0)'}],{duration:300,delay:delay});
+  }
+  async function play(){
+    var id=++run;
+    banner.classList.remove('done');
+    Object.values(L).forEach(function(e){e.getAnimations().forEach(function(a){a.cancel()}); e.style.opacity=0;e.style.transform='';e.style.filter='';e.style.clipPath='';});
+    var H=banner.clientHeight, A=[];
+    A.push(wipe(L.brush,100,false,1100));
+    A.push(wipe(L.brush3,300,false,900));
+    A.push(wipe(L.brush2,500,false,900));
+    A.push(wipe(L.orn_t,700,false,900));
+    A.push(wipe(L.orn_b,900,true,900));
+    // headline
+    A.push(anim(L.flavour,[{opacity:0,transform:'scale(1.5)',filter:'blur(10px)'},{opacity:1,transform:'scale(.97)',filter:'blur(0)',offset:.7},{opacity:1,transform:'scale(1)'}],{duration:800,delay:900,easing:'cubic-bezier(.2,.8,.2,1)'})); shake(900+520);
+    A.push(rise(L.grain,1600,0,60));
+    A.push(rise(L.tag,2100,-70,0));
+    // bowl slides in, rice is tossed up into it
+    A.push(anim(L.bowl,[{opacity:0,transform:'translateX(150px) scale(.94)',filter:'blur(8px)'},{opacity:1,transform:'translateX(0) scale(1)',filter:'blur(0)'}],{duration:1000,delay:700,easing:'cubic-bezier(.2,.8,.2,1)'}));
+    A.push(anim(L.food,[{opacity:0,transform:'translateY(14%) scale(.82)',offset:0},{opacity:1,transform:'translateY(-12%) scale(1.04) rotate(-1.5deg)',offset:.55,easing:'ease-out'},{opacity:1,transform:'translateY(0) scale(1.03,.96)',offset:.78,easing:'ease-in'},{opacity:1,transform:'translateY(-2%) scale(1)',offset:.9},{opacity:1,transform:'translateY(0) scale(1)',offset:1}],{duration:1400,delay:1600,easing:'ease-in-out'}));
+    // garnish flies in around the bowl, steam rises
+    A.push(anim(L.gA,[{opacity:0,transform:'translate(-120px,20px) rotate(-8deg)'},{opacity:1,transform:'translate(0,0) rotate(0)'}],{duration:800,delay:2500,easing:'cubic-bezier(.2,.9,.3,1.2)'}));
+    A.push(anim(L.gB,[{opacity:0,transform:'translate(90px,70px) rotate(10deg)'},{opacity:1,transform:'translate(0,0) rotate(0)'}],{duration:800,delay:2700,easing:'cubic-bezier(.2,.9,.3,1.2)'}));
+    A.push(anim(L.gC,[{opacity:0,transform:'scale(.5) rotate(-25deg)'},{opacity:1,transform:'scale(1) rotate(0)'}],{duration:800,delay:2900,easing:'cubic-bezier(.2,1.3,.3,1)'}));
+    A.push(anim(L.steam,[{opacity:0,transform:'translateY(8%)'},{opacity:1,transform:'translateY(0)'}],{duration:1600,delay:3000,easing:'ease-out'}));
+    await Promise.all(A.map(function(a){return a.finished}));
+    if(id!==run) return;
+    A.forEach(function(a){try{a.commitStyles()}catch(x){} a.cancel()});
+    banner.classList.add('done');
+    await sleep(5500);
+    if(id!==run) return;
+    var out=banner.animate([{opacity:1},{opacity:0}],{duration:500,fill:'forwards'});
+    await out.finished; out.cancel();
+    if(id!==run) return;
+    play();
+  }
+  banner.addEventListener('click',play);
+  if(reduce) return;
+  var started=false;
+  new IntersectionObserver(function(e){ if(e[0].isIntersecting&&!started){started=true;play();} },{threshold:.3}).observe(banner);
+})();
+</script></body></html>

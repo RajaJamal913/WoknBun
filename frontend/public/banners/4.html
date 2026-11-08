@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wok-Tossed Wonder - Animated Banner</title>
+<style>
+  html,body{margin:0;height:100%;overflow:hidden;background:#0b0a09}
+  body{padding:0}
+  .banner{position:relative;width:100%;height:100%;
+    overflow:hidden;border-radius:0;background:#0d0c0b url("assets/4-bg.jpg") center/100% 100% no-repeat;cursor:pointer}
+  .l{position:absolute;opacity:0;pointer-events:none;user-select:none;will-change:transform,opacity}
+  .puff{position:absolute;width:7%;aspect-ratio:1;border-radius:50%;opacity:0;pointer-events:none;
+    background:radial-gradient(circle,rgba(255,255,255,.2),rgba(255,255,255,0) 68%);filter:blur(7px)}
+  .banner.done .puff{animation:steam 4.2s ease-out infinite}
+  .puff:nth-of-type(2){animation-delay:1.4s!important} .puff:nth-of-type(3){animation-delay:2.8s!important}
+  @keyframes steam{0%{opacity:0;transform:translateY(0) scale(.6)}25%{opacity:.9}100%{opacity:0;transform:translateY(-120%) scale(1.5)}}
+  .banner.done [data-n=food]{transform-origin:50% 75%;animation:toss 3.2s ease-in-out infinite}
+  @keyframes toss{0%,100%{transform:translateY(0) scale(1,1)}22%{transform:translateY(-9%) rotate(-1.2deg) scale(1.03)}
+    44%{transform:translateY(0) scale(1.03,.96)}56%{transform:translateY(-2%) scale(1,1.01)}68%{transform:translateY(0) scale(1,1)}}
+  .banner.done [data-n=flame]{transform-origin:50% 100%;animation:flick .7s ease-in-out infinite alternate}
+  @keyframes flick{from{transform:scale(1,1) skewX(-2deg)}to{transform:scale(.94,1.1) skewX(3deg)}}
+  .em{position:absolute;width:.55%;aspect-ratio:1;border-radius:50%;opacity:0;pointer-events:none;
+    background:radial-gradient(circle,#ffd27a,#ff7a1a 55%,rgba(255,90,0,0) 72%)}
+  .banner.done .em{animation:ember 3s ease-out infinite}
+  @keyframes ember{0%{opacity:0;transform:translate(0,0) scale(.6)}15%{opacity:1}100%{opacity:0;transform:translate(var(--dx),-1400%) scale(.3)}}
+  @media (prefers-reduced-motion:reduce){.l{opacity:1!important}}
+</style></head>
+<body>
+<div class="banner" id="banner" title="Click to replay">
+<img class="l" data-n="bowl" alt="" src="assets/4-bowl.webp" style="left:65.3775%;top:37.0166%;width:29.0055%;height:50.2762%">
+<img class="l" data-n="food" alt="" src="assets/4-food.webp" style="left:65.3775%;top:37.0166%;width:29.0055%;height:50.2762%">
+<img class="l" data-n="brush_tr" alt="" src="assets/4-brush_tr.webp" style="left:69.9816%;top:0.0000%;width:30.0184%;height:17.9558%">
+<img class="l" data-n="brush_bl" alt="" src="assets/4-brush_bl.webp" style="left:0.0000%;top:78.0387%;width:20.2578%;height:21.9613%">
+<img class="l" data-n="wokhead" alt="" src="assets/4-wokhead.webp" style="left:9.2081%;top:3.4530%;width:32.9190%;height:16.5746%">
+<img class="l" data-n="flame" alt="" src="assets/4-flame.webp" style="left:22.9282%;top:3.8674%;width:3.3149%;height:8.5635%">
+<img class="l" data-n="wok" alt="" src="assets/4-wok.webp" style="left:9.4383%;top:20.0276%;width:32.6888%;height:19.7514%">
+<img class="l" data-n="wonder" alt="" src="assets/4-wonder.webp" style="left:10.3591%;top:39.3646%;width:30.1565%;height:21.1326%">
+<img class="l" data-n="rule" alt="" src="assets/4-rule.webp" style="left:10.3591%;top:60.4972%;width:30.1565%;height:3.3149%">
+<img class="l" data-n="tag" alt="" src="assets/4-tag.webp" style="left:11.0497%;top:64.9171%;width:27.8545%;height:23.4807%">
+<img class="l" data-n="swoosh" alt="" src="assets/4-swoosh.webp" style="left:16.3444%;top:84.5304%;width:19.4751%;height:6.6298%">
+  <i class="puff" style="left:72%;top:14%"></i><i class="puff" style="left:76%;top:16%"></i><i class="puff" style="left:80%;top:14%"></i>
+</div>
+<script>
+(function(){
+  var banner=document.getElementById('banner');
+  var L={}; banner.querySelectorAll('.l').forEach(function(e){L[e.dataset.n]=e;});
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var sleep=function(ms){return new Promise(function(r){setTimeout(r,ms)})};
+  var run=0;
+  function anim(el,kf,opt){ opt.fill='forwards'; return el.animate(kf,opt); }
+  // headline word falls in, squashes, bounces
+  function drop(el,delay,dist,tilt){
+    return anim(el,[
+      {opacity:0,transform:'translateY('+(-dist)+'px) rotate('+tilt+'deg)',offset:0},
+      {opacity:1,transform:'translateY(0) rotate(0deg) scale(1,1)',offset:.55,easing:'ease-out'},
+      {opacity:1,transform:'translateY(0) scale(1.03,.9)',offset:.66,easing:'ease-out'},
+      {opacity:1,transform:'translateY(-'+(dist*.04)+'px) scale(1,1.02)',offset:.8,easing:'ease-in'},
+      {opacity:1,transform:'translateY(0) scale(1,1)',offset:1}
+    ],{duration:900,delay:delay,easing:'cubic-bezier(.55,0,1,.45)'});
+  }
+  function rise(el,delay,dx,dy){
+    return anim(el,[
+      {opacity:0,transform:'translate('+dx+'px,'+dy+'px)',filter:'blur(6px)'},
+      {opacity:1,transform:'translate(0,0)',filter:'blur(0)'}
+    ],{duration:800,delay:delay,easing:'cubic-bezier(.2,.8,.2,1)'});
+  }
+  // brush stroke wipes in
+  function wipe(el,delay,fromRight,dur){
+    var a=fromRight?'inset(0 0 0 100%)':'inset(0 100% 0 0)';
+    return anim(el,[{opacity:1,clipPath:a},{opacity:1,clipPath:'inset(0 0 0 0)'}],{duration:dur||700,delay:delay,easing:'cubic-bezier(.3,.7,.2,1)'});
+  }
+  function pop(el,delay){
+    return anim(el,[{opacity:0,transform:'scale(.6)'},{opacity:1,transform:'scale(1.1)',offset:.6},{opacity:1,transform:'scale(1)'}],{duration:700,delay:delay,easing:'ease-out'});
+  }
+  function shake(delay){
+    banner.animate([{transform:'translate(0,0)'},{transform:'translate(-5px,3px)'},{transform:'translate(4px,-3px)'},{transform:'translate(-2px,2px)'},{transform:'translate(0,0)'}],{duration:300,delay:delay});
+  }
+  async function play(){
+    var id=++run;
+    banner.classList.remove('done');
+    Object.values(L).forEach(function(e){e.getAnimations().forEach(function(a){a.cancel()}); e.style.opacity=0;e.style.transform='';e.style.filter='';e.style.clipPath='';});
+    var H=banner.clientHeight, A=[];
+    A.push(wipe(L.brush_tr,100,true,1000));
+    A.push(wipe(L.brush_bl,250,false,1000));
+    // wok badge
+    A.push(wipe(L.wokhead,500,false,900));
+    A.push(pop(L.flame,1100));
+    // headline
+    A.push(drop(L.wok,900,H*.8,-2)); shake(900+900*.55);
+    A.push(drop(L.wonder,1450,H*.9,2)); shake(1450+900*.55);
+    A.push(wipe(L.rule,2150,false,700));
+    A.push(rise(L.tag,2300,-70,0));
+    A.push(wipe(L.swoosh,2700,false,700));
+    // bowl slides in, then the food is tossed up into it
+    A.push(anim(L.bowl,[{opacity:0,transform:'translateX(150px) scale(.94)',filter:'blur(8px)'},{opacity:1,transform:'translateX(0) scale(1)',filter:'blur(0)'}],{duration:1000,delay:400,easing:'cubic-bezier(.2,.8,.2,1)'}));
+    A.push(anim(L.food,[{opacity:0,transform:'translateY(14%) scale(.82)',offset:0},{opacity:1,transform:'translateY(-12%) scale(1.04) rotate(-1.5deg)',offset:.55,easing:'ease-out'},{opacity:1,transform:'translateY(0) scale(1.03,.96)',offset:.78,easing:'ease-in'},{opacity:1,transform:'translateY(-2%) scale(1)',offset:.9},{opacity:1,transform:'translateY(0) scale(1)',offset:1}],{duration:1400,delay:1300,easing:'ease-in-out'}));
+    await Promise.all(A.map(function(a){return a.finished}));
+    if(id!==run) return;
+    A.forEach(function(a){try{a.commitStyles()}catch(x){} a.cancel()});
+    banner.classList.add('done');
+    await sleep(5500);
+    if(id!==run) return;
+    var out=banner.animate([{opacity:1},{opacity:0}],{duration:500,fill:'forwards'});
+    await out.finished; out.cancel();
+    if(id!==run) return;
+    play();
+  }
+  banner.addEventListener('click',play);
+  if(reduce) return;
+  var started=false;
+  new IntersectionObserver(function(e){ if(e[0].isIntersecting&&!started){started=true;play();} },{threshold:.3}).observe(banner);
+})();
+</script></body></html>
