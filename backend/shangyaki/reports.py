@@ -1,0 +1,156 @@
+"""
+Shangyaki sales reporting - the same rules as the main POS reports, over Shangyaki's own orders only.
+
+  * "sold" orders = settled or refunded, grouped by the day they were SETTLED
+  * refunds       = grouped by the day the REFUND happened
+  * net sales     = sold total - refunds
+  * item / hourly reports use orders still 'settled' (already net of refunds)
+Only POS sales count here; website orders have no settlement.
+"""
+from datetime import datetime, time, timedelta
+from decimal import Decimal
+
+from django.db.models import Count, Sum
+from django.db.models.functions import Coalesce, ExtractHour
+from django.utils import timezone
+
+from .models import Order, OrderItem, Refund, Settlement
+
+ZERO = Decimal("0.00")
+
+
+def day_range(date_from, date_to):
+    tz = timezone.get_current_timezone()
+    start = timezone.make_aware(datetime.combine(date_from, time.min), tz)
+    end = timezone.make_aware(datetime.combine(date_to + timedelta(days=1), time.min), tz)
+    return start, end
+
+
+def _money(value):
+    return str((value or ZERO).quantize(ZERO))
+
+
+def _sold(start, end):
+    return Order.objects.filter(source="pos", status__in=["settled", "refunded"], settled_at__gte=start, settled_at__lt=end)
+
+
+def _net(start, end):
+    return Order.objects.filter(source="pos", status="settled", settled_at__gte=start, settled_at__lt=end)
+
+
+def _cancelled(start, end):
+    return (
+        Order.objects.filter(source="pos", status="cancelled")
+        .annotate(cancelled_when=Coalesce("cancelled_at", "created_at"))
+        .filter(cancelled_when__gte=start, cancelled_when__lt=end)
+    )
+
+
+def sales_summary(date_from, date_to):
+    start, end = day_range(date_from, date_to)
+    sold = _sold(start, end)
+    agg = sold.aggregate(
+        orders=Count("id"), items_total=Sum("subtotal"), discounts=Sum("discount_amount"),
+        tax=Sum("tax_amount"), delivery=Sum("delivery_charges"), total_sales=Sum("grand_total"),
+    )
+    refunds = Refund.objects.filter(refunded_at__gte=start, refunded_at__lt=end).aggregate(count=Count("id"), total=Sum("amount"))
+    total_sales = agg["total_sales"] or ZERO
+    refunds_total = refunds["total"] or ZERO
+    net_sales = total_sales - refunds_total
+    refunded_orders = sold.filter(status="refunded").count()
+    kept_orders = (agg["orders"] or 0) - refunded_orders
+
+    by_type = [
+        {"order_type": r["order_type"], "orders": r["n"], "total": _money(r["t"])}
+        for r in sold.values("order_type").annotate(n=Count("id"), t=Sum("grand_total")).order_by("-t")
+    ]
+    by_payment = [
+        {"payment_method": r["payment_method"], "orders": r["n"], "total": _money(r["t"])}
+        for r in Settlement.objects.filter(order__in=sold)
+        .values("payment_method").annotate(n=Count("id"), t=Sum("order__grand_total")).order_by("-t")
+    ]
+    return {
+        "restaurant": "Shangyaki",
+        "from": date_from.isoformat(), "to": date_to.isoformat(),
+        "orders": agg["orders"] or 0,
+        "items_total": _money(agg["items_total"]), "discounts": _money(agg["discounts"]),
+        "tax": _money(agg["tax"]), "delivery_charges": _money(agg["delivery"]),
+        "total_sales": _money(total_sales),
+        "refunds_count": refunds["count"] or 0, "refunds_total": _money(refunds_total),
+        "net_sales": _money(net_sales),
+        "avg_order_value": _money(net_sales / kept_orders) if kept_orders > 0 else _money(ZERO),
+        "cancelled_orders": _cancelled(start, end).count(),
+        "by_order_type": by_type, "by_payment": by_payment,
+    }
+
+
+def item_sales(date_from, date_to):
+    start, end = day_range(date_from, date_to)
+    rows = (
+        OrderItem.objects.filter(order__in=_net(start, end))
+        .values("menu_item__category__name", "item_name", "size_label")
+        .annotate(quantity=Sum("quantity"), amount=Sum("line_total"))
+        .order_by("-amount", "item_name")
+    )
+    items = [
+        {
+            "category": r["menu_item__category__name"] or ("Deals" if r["size_label"] == "Deal" else "Other"),
+            "item_name": r["item_name"], "size_label": r["size_label"],
+            "quantity": r["quantity"], "amount": _money(r["amount"]),
+        }
+        for r in rows
+    ]
+    return {
+        "restaurant": "Shangyaki",
+        "from": date_from.isoformat(), "to": date_to.isoformat(), "items": items,
+        "total_quantity": sum(i["quantity"] for i in items),
+        "total_amount": _money(sum((Decimal(i["amount"]) for i in items), ZERO)),
+    }
+
+
+def hourly_sales(day):
+    start, end = day_range(day, day)
+    rows = _net(start, end).annotate(hour=ExtractHour("settled_at")).values("hour").annotate(n=Count("id"), t=Sum("grand_total"))
+    by_hour = {r["hour"]: r for r in rows}
+    hours = [
+        {"hour": h, "label": f"{h:02d}:00", "orders": by_hour.get(h, {}).get("n", 0), "total": _money(by_hour.get(h, {}).get("t"))}
+        for h in range(24)
+    ]
+    return {
+        "restaurant": "Shangyaki", "date": day.isoformat(), "hours": hours,
+        "total_orders": sum(h["orders"] for h in hours),
+        "total_sales": _money(sum((Decimal(h["total"]) for h in hours), ZERO)),
+    }
+
+
+def cancellations(date_from, date_to):
+    """Cancelled = voided BEFORE payment. Refunded = reversed AFTER payment."""
+    start, end = day_range(date_from, date_to)
+    cancelled = _cancelled(start, end).select_related("shift__cashier").prefetch_related("items").order_by("-cancelled_when")
+    refunds = Refund.objects.filter(refunded_at__gte=start, refunded_at__lt=end).select_related("order", "cashier").order_by("-refunded_at")
+    cancelled_rows = [
+        {
+            "order_id": o.id, "time": o.cancelled_when.isoformat(), "order_type": o.order_type,
+            "table": o.table_label, "reason": o.cancel_reason,
+            "cashier": (o.shift.cashier.get_full_name() or o.shift.cashier.get_username()) if o.shift else "",
+            "items": ", ".join(f"{i.quantity}x {i.item_name}" for i in o.items.all()),
+            "total": _money(o.grand_total),
+        }
+        for o in cancelled
+    ]
+    refund_rows = [
+        {
+            "order_id": r.order_id, "time": r.refunded_at.isoformat(),
+            "refunded_by": r.cashier.get_full_name() or r.cashier.get_username(),
+            "reason": r.reason, "total": _money(r.amount),
+        }
+        for r in refunds
+    ]
+    return {
+        "restaurant": "Shangyaki",
+        "from": date_from.isoformat(), "to": date_to.isoformat(),
+        "cancelled": cancelled_rows,
+        "cancelled_total": _money(sum((Decimal(r["total"]) for r in cancelled_rows), ZERO)),
+        "refunds": refund_rows,
+        "refunds_total": _money(sum((Decimal(r["total"]) for r in refund_rows), ZERO)),
+    }

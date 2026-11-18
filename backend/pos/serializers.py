@@ -1,5 +1,6 @@
-from decimal import Decimal
+from decimal import Decimal, ROUND_HALF_UP
 
+from django.conf import settings
 from django.db import IntegrityError, transaction
 from rest_framework import serializers
 
@@ -7,6 +8,17 @@ from accounts.models import Customer
 from menu.pricing import OrderLineSerializer, build_lines, calc_tax, money
 from .models import Shift, Order, OrderItem, Settlement, Refund
 from .permissions import is_manager, owns_shift
+
+# Takeaway delivery rate in Rs. per km. Keep in step with DELIVERY_RATE_PER_KM in the POS
+# terminal (renderer/delivery.js) so the bill on screen matches the saved order.
+DELIVERY_RATE_PER_KM = Decimal(str(getattr(settings, "DELIVERY_RATE_PER_KM", 15)))
+
+
+def calc_delivery(km):
+    """Takeaway delivery charge: km x rate, in whole rupees, rounding half up (same rule as the POS)."""
+    if not km:
+        return money(0)
+    return money((Decimal(km) * DELIVERY_RATE_PER_KM).quantize(Decimal("1"), rounding=ROUND_HALF_UP))
 
 
 class ShiftSerializer(serializers.ModelSerializer):
@@ -41,6 +53,12 @@ class OrderSerializer(serializers.ModelSerializer):
     discount_amount = serializers.DecimalField(
         max_digits=10, decimal_places=2, min_value=Decimal("0"), required=False, default=Decimal("0")
     )
+    # Takeaway only: how far the order is going. The server turns it into delivery_charges itself
+    # (the amount is never accepted from a client). Not stored - it is only an input to the charge.
+    delivery_distance_km = serializers.DecimalField(
+        max_digits=4, decimal_places=1, min_value=Decimal("0"), max_value=Decimal("100"),
+        required=False, write_only=True,
+    )
 
     class Meta:
         model = Order
@@ -48,6 +66,7 @@ class OrderSerializer(serializers.ModelSerializer):
             "id", "client_order_id", "shift", "order_type", "table_label", "status", "cancel_reason", "cancelled_at",
             "subtotal", "discount_amount", "tax_amount", "delivery_charges", "grand_total",
             "customer", "customer_info", "online", "created_at", "settled_at", "items",
+            "delivery_distance_km",
         ]
         # Totals are computed by the server - never accepted from a client.
         read_only_fields = [
@@ -81,6 +100,9 @@ class OrderSerializer(serializers.ModelSerializer):
         if attrs.get("order_type") == "dine_in" and not table:
             raise serializers.ValidationError({"table_label": "Enter the table for a dine-in order."})
         attrs["table_label"] = table if attrs.get("order_type") == "dine_in" else ""
+        # Delivery is a takeaway thing; a distance on any other order type is a mistake, not something to ignore.
+        if attrs.get("delivery_distance_km") and attrs.get("order_type") != "takeaway":
+            raise serializers.ValidationError({"delivery_distance_km": "Delivery distance only applies to takeaway orders."})
         return attrs
 
     def _user(self):
@@ -110,8 +132,11 @@ class OrderSerializer(serializers.ModelSerializer):
         if discount > 0 and not is_manager(user):
             raise serializers.ValidationError({"discount_amount": "Only a manager can apply a discount."})
 
+        # Delivery is added after tax: it is not taxed and not discounted.
+        # (Pop the distance now - Order has no such column, so it must not reach Order.objects.create.)
+        delivery = calc_delivery(validated_data.pop("delivery_distance_km", None))
         tax_amount = calc_tax(subtotal - discount)
-        grand_total = subtotal - discount + tax_amount
+        grand_total = subtotal - discount + tax_amount + delivery
 
         try:
             with transaction.atomic():
@@ -119,6 +144,7 @@ class OrderSerializer(serializers.ModelSerializer):
                     subtotal=subtotal,
                     discount_amount=discount,
                     tax_amount=tax_amount,
+                    delivery_charges=delivery,
                     grand_total=grand_total,
                     **validated_data,
                 )
